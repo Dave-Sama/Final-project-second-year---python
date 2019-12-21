@@ -111,7 +111,7 @@ class GUI(object):
             combo_semester.current(0)  # set the selected item
             combo_semester.place(x=270, y=22)
 
-            #creating a Label for Format:
+            # creating a Label for Format:
             Label(self.student_top, text='Format:').place(x=419, y=22)
 
             # creating a combobox for Format:
@@ -120,20 +120,32 @@ class GUI(object):
             combo_format.current(0)  # set the selected item
             combo_format.place(x=477, y=22)
 
-
+            # crating an Accept button:
+            Button(self.student_top, text='Accept', command=self.login_verify, width = 20).place(x=679, y=22)
 
     def create(self, key):
+        """
+        This method is navigating the system to open the right window via User's validation login/password:
+        * if the user is a student - it should navigate him to the student's bar.
+        * if the user is a Lecturer - it should navigate him to the Lecturer's bar.
+        * if the user is a Coordinator - it should navigate him to the Coordinator's bar.
+
+        """
+        # creating a common TopLevel layer for all kind of users, but with different kind of classification the window
+        # will present a different bar.
         self.new_root = Toplevel(self.root)
-        if key == 'S' or key=='L':
-            # gui for student - one for questions and the second for lecturers.
+
+        # creating the navigation with the user's classification.
+        if key == 'S' or key == 'L':
+            # gui for Students and Lecturers - with disabled Lecturer button, because, if you press on lecturer button.
+            # it should open the Lecturer management bar for the Coordinator
             Button(self.new_root, text='Questions', command=lambda: self.display(key)).grid(row=1, column=1, padx=10, pady=10)
             Button(self.new_root, text='Lecturers', state=DISABLED).grid(row=1, column=2, padx=10, pady=10)
 
         else:
+            # it's the key =='C' case: which is open dor the Coordinator, he have access to question and Lecturer.
             Button(self.new_root, text='Questions').grid(row=1, column=1, padx=10, pady=10)
             Button(self.new_root, text='Lecturers').grid(row=1, column=2, padx=10, pady=10)
-
-
 
     def login_verify(self):
         """
