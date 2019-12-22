@@ -144,41 +144,36 @@ class GUI(object):
         """
         this method is handling the logic behind the forward button
         """
-
-
         self.my_label.place_forget()
         self.my_label = Label(self.student_top, image=self.questions_image[image_number-1])
         self.my_label.image = self.questions_image[image_number-1]
 
-        self.button_forward = Button(self.student_top, text='>>', command=lambda: self.forward(image_number+1))
-        self.button_back = Button(self.student_top, text='<<', command=lambda: self.back(image_number-1))
+        if image_number < len(self.questions_image):
+            self.button_forward = Button(self.student_top, text='>>', width=5, command=lambda: self.forward(image_number+1)).place(x=488, y=50)
+            self.button_back = Button(self.student_top, text='<<', width=5, command=lambda: self.back(image_number-1)).place(x=285, y=50)
 
+        else:
+            self.button_forward = Button(self.student_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
 
-        #
-        # if image_number == len(self.questions_image):
-        #     self.button_forward = Button(self.student_top, text='>>', state=DISABLED)
-        #
         self.my_label.place(x=260, y=100)
-        # self.button_forward = Button.place(x=488, y=50)
-        # self.button_back = Button.place(x=285, y=50)
+
 
     def back(self, image_number):
         """
         this method handling the logic behind the back button
         """
-
-
         self.my_label.place_forget()
-        self.my_label = Label(image=self.questions_image[image_number - 1])
-        self.button_forward = Button(self.student_top, text='>>', command=lambda: self.forward(image_number + 1))
-        self.button_back = Button(self.student_top, text='<<', command=lambda: self.back(image_number - 1))
+        self.my_label = Label(self.student_top, image=self.questions_image[image_number - 1])
+        self.my_label.image = self.questions_image[image_number - 1]
+
+        self.button_forward = Button(self.student_top, text='>>', width=5, command=lambda: self.forward(image_number + 1)).place(x=488, y=50)
+        self.button_back = Button(self.student_top, text='<<', width=5, command=lambda: self.back(image_number - 1)).place(x=285, y=50)
 
         if image_number == 1:
-            button_back = Button(self.student_top,text='<<', state=DISABLED)
+            self.button_forward = Button(self.student_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
+
 
         self.my_label.place(x=260, y=100)
-        self.button_forward = Button.place(x=488, y=50)
-        self.button_back = Button.place(x=285, y=50)
 
     def question_match(self):
         """
