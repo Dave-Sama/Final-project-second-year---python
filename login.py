@@ -1,10 +1,13 @@
 
-# all the imported libraries/API for this project
+"""
+ all the imported libraries/API for this project:
+"""""
 from tkinter import *
 from tkinter import messagebox
-from PIL import ImageTk,Image
+from PIL import ImageTk, Image
 from tkinter.ttk import *
 from data_base import *
+from OS_cropping_tool import *
 
 class GUI(object):
     def __init__(self):
@@ -41,161 +44,194 @@ class GUI(object):
     def sub_subject_check(self):
         if self.combo_course.get() == 'Calculus1':
             # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+            Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
-            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject = Combobox(self.student_Lecturer_top)
             self.combo_sub_subject['values'] = ('Integrals', 'Series', 'Derivatives', 'Investigation of functions', 'Limits')
             self.combo_sub_subject.current(0)  # set the selected item
             self.combo_sub_subject.place(x=274, y=0)
 
         elif self.combo_course.get() == 'Linear algebra':
             # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+            Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
-            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject = Combobox(self.student_Lecturer_top)
             self.combo_sub_subject['values'] = ('Spans', 'Matrices', 'Vectors', 'base and 3D', "Determinate")
             self.combo_sub_subject.current(0)  # set the selected item
             self.combo_sub_subject.place(x=274, y=0)
 
         elif self.combo_course.get() == 'Pre computer science':
             # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+            Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
-            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject = Combobox(self.student_Lecturer_top)
             self.combo_sub_subject['values'] = ('Functions', 'Variables', 'Structs', 'Recursions', 'Classes')
             self.combo_sub_subject.current(0)  # set the selected item
             self.combo_sub_subject.place(x=274, y=0)
 
         elif self.combo_course.get() == 'Architecture':
             # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+            Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
-            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject = Combobox(self.student_Lecturer_top)
             self.combo_sub_subject['values'] = ('PLA/PAL', 'Diagrams', 'RTL', 'Logging gates', "RAM")
             self.combo_sub_subject.current(0)  # set the selected item
             self.combo_sub_subject.place(x=274, y=0)
 
         elif self.combo_course.get() == 'Logic 1':
             # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+            Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
-            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject = Combobox(self.student_Lecturer_top)
             self.combo_sub_subject['values'] = ('Predicates', 'Logical expressions', 'Inductions', 'Logic', 'Graphs')
             self.combo_sub_subject.current(0)  # set the selected item
             self.combo_sub_subject.place(x=274, y=0)
 
+    def add_question(self):
+        """
+
+        this method does the following:
+        1.
+
+        """
 
     def display(self, key):
 
-        self.student_top = Toplevel(self.root)
-        if key == 'S':
-            """
-                    here should be displayed all the options the students has:
+        self.student_Lecturer_top = Toplevel(self.root)
 
-                    1. choose a course.
-                    2. choose a sub-subject for this course.
-                    3. choose the difficulty for the displayed questions.
-                    4. choose to display only questions with an answer.
-                    5. choose a test from specific year
-                    6. choose a semester
-                    7. test/quiz
-                    8. period A/B
-                    9. format of the question
-                    """
-            # creating the defining the new layer.
-            self.student_top.geometry('840x430')
+        """
+                here should be displayed all the options the students has:
 
-            # creating a Label for courses:
-            Label(self.student_top, text='Course: ').grid(row=0, column=0)
+                1. choose a course.
+                2. choose a sub-subject for this course.
+                3. choose the difficulty for the displayed questions.
+                4. choose to display only questions with an answer.
+                5. choose a test from specific year
+                6. choose a semester
+                7. test/quiz
+                8. period A/B
+                9. format of the question
+              
 
-            # creating combobox for the courses:
-            self.combo_course = Combobox(self.student_top, width=14)
-            self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
-            self.combo_course.current(0)  # set the selected item
-            self.combo_course.grid(row=0, column=1, sticky='W')
+                
+                
+                here should be displayed all the options the students has:
+        
+                1. choose a course.
+                2. choose a sub-subject for this course.
+                3. choose the difficulty for the displayed questions.
+                4. choose to display only questions with an answer.
+                5. choose a test from specific year
+                6. choose a semester
+                7. test/quiz
+                8. period A/B
+                9. format of the question
+                10. add a question to the data base.
+                
+        """
+        # creating the defining the new layer.
+        self.student_Lecturer_top.geometry('840x430')
 
-            # creating a button for courses: (example)
-            print(self.combo_course.get())
-            if self.combo_course.get() == None:
-                Button(self.student_top, text='ಠᴗಠ', width=3, state=DISABLED).place(x=161, y=0)
-            else:
-                Button(self.student_top, text='ಠᴗಠ', width=3, command=self.sub_subject_check).place(x=161, y=0)
+        # creating a Label for courses:
+        Label(self.student_Lecturer_top, text='Course: ').grid(row=0, column=0)
+
+        # creating combobox for the courses:
+        self.combo_course = Combobox(self.student_Lecturer_top, width=14)
+        self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
+        self.combo_course.current(0)  # set the selected item
+        self.combo_course.grid(row=0, column=1, sticky='W')
+
+        # creating a button for courses: (example)
+        print(self.combo_course.get())
+        if self.combo_course.get() == None:
+            Button(self.student_Lecturer_top, text='ಠᴗಠ', width=3, state=DISABLED).place(x=161, y=0)
+        else:
+            Button(self.student_Lecturer_top, text='ಠᴗಠ', width=3, command=self.sub_subject_check).place(x=161, y=0)
 
 
-            # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+        # creating a Label for courses:
+        Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
 
-            # creating combobox for the sub-subjects:
-            self.combo_sub_subject = Combobox(self.student_top)
-            self.combo_sub_subject['values'] = ('not yet', 'not yet', 'not yet', 'not yet', "not yet")
-            self.combo_sub_subject.current(0)  # set the selected item
-            self.combo_sub_subject.place(x=274, y=0)
+        # creating combobox for the sub-subjects:
+        self.combo_sub_subject = Combobox(self.student_Lecturer_top)
+        self.combo_sub_subject['values'] = ('not yet', 'not yet', 'not yet', 'not yet', "not yet")
+        self.combo_sub_subject.current(0)  # set the selected item
+        self.combo_sub_subject.place(x=274, y=0)
 
-            # creating a Label for Difficulty:
-            Label(self.student_top, text='  Difficulty: ').place(x=417, y=0)
+        # creating a Label for Difficulty:
+        Label(self.student_Lecturer_top, text='  Difficulty: ').place(x=417, y=0)
 
-            # creating combobox for the difficulty:
-            self.combo_difficulty = Combobox(self.student_top)
-            self.combo_difficulty['values'] = ('Easy', 'Moderate', 'Hard')
-            self.combo_difficulty.current(0)  # set the selected item
-            self.combo_difficulty.place(x=483, y=0)
+        # creating combobox for the difficulty:
+        self.combo_difficulty = Combobox(self.student_Lecturer_top)
+        self.combo_difficulty['values'] = ('Easy', 'Moderate', 'Hard')
+        self.combo_difficulty.current(0)  # set the selected item
+        self.combo_difficulty.place(x=483, y=0)
 
-            # creating a Label for Answers:
-            Label(self.student_top, text='  Answers: ').place(x=626, y=0)
+        # creating a Label for Answers:
+        Label(self.student_Lecturer_top, text='  Answers: ').place(x=626, y=0)
 
-            # creating combobox for the Answers:
-            self.combo_answers = Combobox(self.student_top)
-            self.combo_answers['values'] = ('Yes', 'No')
-            self.combo_answers.current(0)  # set the selected item
-            self.combo_answers.place(x=688, y=0)
+        # creating combobox for the Answers:
+        self.combo_answers = Combobox(self.student_Lecturer_top)
+        self.combo_answers['values'] = ('Yes', 'No')
+        self.combo_answers.current(0)  # set the selected item
+        self.combo_answers.place(x=688, y=0)
 
-            # creating a Label for Years:
-            Label(self.student_top, text='Year:').place(x=1, y=22)
+        # creating a Label for Years:
+        Label(self.student_Lecturer_top, text='Year:').place(x=1, y=22)
 
-            # creating spinbox for the Years:
-            var = IntVar()
-            var.set(2019)
-            self.spin_years = Spinbox(self.student_top, from_=1995, to=2020, width=6, textvariable=var)
-            self.spin_years.place(x=49, y=22, width=144)
+        if key == 'L':
+            # creating an Add button for the lecturer:
+            Button(self.student_Lecturer_top, text='+', width=3, command=self.add_question).place(x=5, y=50)
 
-            # creating Label for the semester:
-            Label(self.student_top, text='Semester:').place(x=201, y=22)
+            # creating a delete question for the lecturer:
+            Button(self.student_Lecturer_top, text='-', width=3, command=self.add_question).place(x=40, y=50)
 
-            # creating a combobox for the Semester:
-            self.combo_semester = Combobox(self.student_top)
-            self.combo_semester['values'] = ('A', 'B', 'Summer')
-            self.combo_semester.current(0)  # set the selected item
-            self.combo_semester.place(x=274, y=22)
+        # creating spinbox for the Years:
+        var = IntVar()
+        var.set(2019)
+        self.spin_years = Spinbox(self.student_Lecturer_top, from_=1995, to=2020, width=6, textvariable=var)
+        self.spin_years.place(x=49, y=22, width=144)
 
-            # creating a Label for Format:
-            Label(self.student_top, text='Format:').place(x=423, y=22)
+        # creating Label for the semester:
+        Label(self.student_Lecturer_top, text='Semester:').place(x=201, y=22)
 
-            # creating a combobox for Format:
-            self.combo_format = Combobox(self.student_top)
-            self.combo_format['values'] = ('Docx', 'Pdf', 'Jpeg')
-            self.combo_format.current(0)  # set the selected item
-            self.combo_format.place(x=483, y=22)
+        # creating a combobox for the Semester:
+        self.combo_semester = Combobox(self.student_Lecturer_top)
+        self.combo_semester['values'] = ('A', 'B', 'Summer')
+        self.combo_semester.current(0)  # set the selected item
+        self.combo_semester.place(x=274, y=22)
 
-            # creating Label for the Exam/Quiz:
-            Label(self.student_top, text='From:').place(x=632, y=22)
+        # creating a Label for Format:
+        Label(self.student_Lecturer_top, text='Format:').place(x=423, y=22)
 
-            # creating a combobox for the Exam/Quiz:
-            self.combo_from = Combobox(self.student_top)
-            self.combo_from['values'] = ('Exam', 'Quiz')
-            self.combo_from.current(0)  # set the selected item
-            self.combo_from.place(x=688, y=22)
+        # creating a combobox for Format:
+        self.combo_format = Combobox(self.student_Lecturer_top)
+        self.combo_format['values'] = ('Docx', 'Pdf', 'Jpeg')
+        self.combo_format.current(0)  # set the selected item
+        self.combo_format.place(x=483, y=22)
 
-            # crating an Accept button:
-            Button(self.student_top, text='Accept', command=self.question_match, width=20).place(x=334, y=50)
+        # creating Label for the Exam/Quiz:
+        Label(self.student_Lecturer_top, text='From:').place(x=632, y=22)
 
-            # creating forward/backward button for image display:
-            self.button_forward = Button(self.student_top, text='>>', width=5, command=lambda: self.forward(2)).place(x=488, y=50)
-            self.button_back = Button(self.student_top, text='<<', width=5, command=self.back, state=DISABLED).place(x=285, y=50)
+        # creating a combobox for the Exam/Quiz:
+        self.combo_from = Combobox(self.student_Lecturer_top)
+        self.combo_from['values'] = ('Exam', 'Quiz')
+        self.combo_from.current(0)  # set the selected item
+        self.combo_from.place(x=688, y=22)
+
+        # crating an Accept button:
+        Button(self.student_Lecturer_top, text='Accept', command=self.question_match, width=20).place(x=334, y=50)
+
+        # creating forward/backward button for image display:
+        self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(2)).place(x=488, y=50)
+        self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=self.back, state=DISABLED).place(x=285, y=50)
+
+
 
 
     def forward(self, image_number):
@@ -203,15 +239,15 @@ class GUI(object):
         this method is handling the logic behind the forward button
         """
         self.my_label.place_forget()
-        self.my_label = Label(self.student_top, image=self.questions_image[image_number-1])
+        self.my_label = Label(self.student_Lecturer_top, image=self.questions_image[image_number - 1])
         self.my_label.image = self.questions_image[image_number-1]
 
         if image_number < len(self.questions_image):
-            self.button_forward = Button(self.student_top, text='>>', width=5, command=lambda: self.forward(image_number+1)).place(x=488, y=50)
-            self.button_back = Button(self.student_top, text='<<', width=5, command=lambda: self.back(image_number-1)).place(x=285, y=50)
+            self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(image_number + 1)).place(x=488, y=50)
+            self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(image_number - 1)).place(x=285, y=50)
 
         else:
-            self.button_forward = Button(self.student_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
+            self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
 
         self.my_label.place(x=260, y=100)
 
@@ -221,14 +257,14 @@ class GUI(object):
         this method handling the logic behind the back button
         """
         self.my_label.place_forget()
-        self.my_label = Label(self.student_top, image=self.questions_image[image_number - 1])
+        self.my_label = Label(self.student_Lecturer_top, image=self.questions_image[image_number - 1])
         self.my_label.image = self.questions_image[image_number - 1]
 
-        self.button_forward = Button(self.student_top, text='>>', width=5, command=lambda: self.forward(image_number + 1)).place(x=488, y=50)
-        self.button_back = Button(self.student_top, text='<<', width=5, command=lambda: self.back(image_number - 1)).place(x=285, y=50)
+        self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(image_number + 1)).place(x=488, y=50)
+        self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(image_number - 1)).place(x=285, y=50)
 
         if image_number == 1:
-            self.button_forward = Button(self.student_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
+            self.button_forward = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
 
 
         self.my_label.place(x=260, y=100)
@@ -279,7 +315,7 @@ class GUI(object):
         """
         this method is giving an alet if there is no match between the user's input and database.
         """
-        error_window = Toplevel(self.student_top)
+        error_window = Toplevel(self.student_Lecturer_top)
         Label(error_window, text='Cannot find a match').pack()
 
     def image_display(self):
@@ -302,7 +338,7 @@ class GUI(object):
 
 
         # The Label widget is a standard Tkinter widget used to display a text or image on the screen.
-        self.my_label = tk.Label(self.student_top, image=self.questions_image[0])
+        self.my_label = tk.Label(self.student_Lecturer_top, image=self.questions_image[0])
         self.my_label.image = self.questions_image[0]
         # The Pack geometry manager packs widgets in rows or columns.
         self.my_label.place(x=260, y=100)
