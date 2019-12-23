@@ -3,11 +3,13 @@
  all the imported libraries/API for this project:
 """""
 from tkinter import *
+import os
 from tkinter import messagebox
 from PIL import ImageTk, Image
 from tkinter.ttk import *
 from data_base import *
-from OS_cropping_tool import *
+
+# open source code from GitHub
 
 class GUI(object):
     def __init__(self):
@@ -96,9 +98,13 @@ class GUI(object):
         """
 
         this method does the following:
-        1.
+        1. open the open source tool to crop an image from the PC
+        2. crop the right place in the image
+        3. save it into a new element in our data base
 
         """
+        # this os call should open the open source code, so the user could crop a question.
+        os.startfile("C:\\Users\\david\\PycharmProjects\\Pe_fundementals_reworked\\Open source\\new_os_crop.py")
 
     def display(self, key):
 
