@@ -38,14 +38,54 @@ class GUI(object):
         # creating "Accept" button:
         Button(self.root, text='Accept', command=self.login_verify).grid(row=4, column=1, padx=10, pady=10)
 
-    def sub_subject_check(self, key):
-        if key == 'Calculus1':
+    def sub_subject_check(self):
+        if self.combo_course.get() == 'Calculus1':
             # creating a Label for courses:
             Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
             self.combo_sub_subject = Combobox(self.student_top)
-            self.combo_sub_subject['values'] = ('Integrals', 'banana', 'pie', 'something', "-_-")
+            self.combo_sub_subject['values'] = ('Integrals', 'Series', 'Derivatives', 'Investigation of functions', 'Limits')
+            self.combo_sub_subject.current(0)  # set the selected item
+            self.combo_sub_subject.place(x=274, y=0)
+
+        elif self.combo_course.get() == 'Linear algebra':
+            # creating a Label for courses:
+            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+
+            # creating combobox for the sub-subjects:
+            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject['values'] = ('Spans', 'Matrices', 'Vectors', 'base and 3D', "Determinate")
+            self.combo_sub_subject.current(0)  # set the selected item
+            self.combo_sub_subject.place(x=274, y=0)
+
+        elif self.combo_course.get() == 'Pre computer science':
+            # creating a Label for courses:
+            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+
+            # creating combobox for the sub-subjects:
+            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject['values'] = ('Functions', 'Variables', 'Structs', 'Recursions', 'Classes')
+            self.combo_sub_subject.current(0)  # set the selected item
+            self.combo_sub_subject.place(x=274, y=0)
+
+        elif self.combo_course.get() == 'Architecture':
+            # creating a Label for courses:
+            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+
+            # creating combobox for the sub-subjects:
+            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject['values'] = ('PLA/PAL', 'Diagrams', 'RTL', 'Logging gates', "RAM")
+            self.combo_sub_subject.current(0)  # set the selected item
+            self.combo_sub_subject.place(x=274, y=0)
+
+        elif self.combo_course.get() == 'Logic 1':
+            # creating a Label for courses:
+            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+
+            # creating combobox for the sub-subjects:
+            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject['values'] = ('Predicates', 'Logical expressions', 'Inductions', 'Logic', 'Graphs')
             self.combo_sub_subject.current(0)  # set the selected item
             self.combo_sub_subject.place(x=274, y=0)
 
@@ -74,17 +114,17 @@ class GUI(object):
             Label(self.student_top, text='Course: ').grid(row=0, column=0)
 
             # creating combobox for the courses:
-            self.combo_course = Combobox(self.student_top,width=14)
+            self.combo_course = Combobox(self.student_top, width=14)
             self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
             self.combo_course.current(0)  # set the selected item
             self.combo_course.grid(row=0, column=1, sticky='W')
 
             # creating a button for courses: (example)
+            print(self.combo_course.get())
             if self.combo_course.get() == None:
                 Button(self.student_top, text='ಠᴗಠ', width=3, state=DISABLED).place(x=161, y=0)
             else:
-                temp = self.combo_course.get()
-                Button(self.student_top, text='ಠᴗಠ', width=3, command=lambda :self.sub_subject_check(temp)).place(x=161, y=0)
+                Button(self.student_top, text='ಠᴗಠ', width=3, command=self.sub_subject_check).place(x=161, y=0)
 
 
             # creating a Label for courses:
