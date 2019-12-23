@@ -38,6 +38,18 @@ class GUI(object):
         # creating "Accept" button:
         Button(self.root, text='Accept', command=self.login_verify).grid(row=4, column=1, padx=10, pady=10)
 
+    def sub_subject_check(self, key):
+        if key == 'Calculus1':
+            # creating a Label for courses:
+            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
+
+            # creating combobox for the sub-subjects:
+            self.combo_sub_subject = Combobox(self.student_top)
+            self.combo_sub_subject['values'] = ('Integrals', 'banana', 'pie', 'something', "-_-")
+            self.combo_sub_subject.current(0)  # set the selected item
+            self.combo_sub_subject.place(x=274, y=0)
+
+
     def display(self, key):
 
         self.student_top = Toplevel(self.root)
@@ -62,39 +74,45 @@ class GUI(object):
             Label(self.student_top, text='Course: ').grid(row=0, column=0)
 
             # creating combobox for the courses:
-            self.combo_course = Combobox(self.student_top)
+            self.combo_course = Combobox(self.student_top,width=14)
             self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
             self.combo_course.current(0)  # set the selected item
             self.combo_course.grid(row=0, column=1, sticky='W')
 
+            # creating a button for courses: (example)
+            if self.combo_course.get() == None:
+                Button(self.student_top, text='ಠᴗಠ', width=3, state=DISABLED).place(x=161, y=0)
+            else:
+                temp = self.combo_course.get()
+                Button(self.student_top, text='ಠᴗಠ', width=3, command=lambda :self.sub_subject_check(temp)).place(x=161, y=0)
 
 
             # creating a Label for courses:
-            Label(self.student_top, text='   Sub subject: ').grid(row=0, column=3)
+            Label(self.student_top, text='   Sub subject: ').place(x=192, y=0)
 
             # creating combobox for the sub-subjects:
             self.combo_sub_subject = Combobox(self.student_top)
-            self.combo_sub_subject['values'] = ('Integrals', 'not yet', 'not yet', 'not yet', "not yet")
+            self.combo_sub_subject['values'] = ('not yet', 'not yet', 'not yet', 'not yet', "not yet")
             self.combo_sub_subject.current(0)  # set the selected item
-            self.combo_sub_subject.grid(row=0, column=4)
+            self.combo_sub_subject.place(x=274, y=0)
 
             # creating a Label for Difficulty:
-            Label(self.student_top, text='  Difficulty: ').grid(row=0, column=6)
+            Label(self.student_top, text='  Difficulty: ').place(x=417, y=0)
 
             # creating combobox for the difficulty:
             self.combo_difficulty = Combobox(self.student_top)
             self.combo_difficulty['values'] = ('Easy', 'Moderate', 'Hard')
             self.combo_difficulty.current(0)  # set the selected item
-            self.combo_difficulty.grid(row=0, column=7, sticky='W')
+            self.combo_difficulty.place(x=483, y=0)
 
             # creating a Label for Answers:
-            Label(self.student_top, text='  Answers: ').grid(row=0, column=9)
+            Label(self.student_top, text='  Answers: ').place(x=626, y=0)
 
             # creating combobox for the Answers:
             self.combo_answers = Combobox(self.student_top)
             self.combo_answers['values'] = ('Yes', 'No')
             self.combo_answers.current(0)  # set the selected item
-            self.combo_answers.grid(row=0, column=10, sticky='W')
+            self.combo_answers.place(x=688, y=0)
 
             # creating a Label for Years:
             Label(self.student_top, text='Year:').place(x=1, y=22)
