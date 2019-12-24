@@ -1,6 +1,4 @@
-from tkinter import *
-from PIL import Image, ImageTk
-import tkinter as tk
+
 
 
 
@@ -11,4 +9,7 @@ users_data = {'a': ['a', 'S'], 'b': ['b', 'L'], 'c': ['c', 'C']}
 # each question are stored into a dictionary with the following format:
 # {key:" specific ID of the question " : values: "list of:"[ 'Question itself', 'Course', 'Sub-subject',
 # , 'Difficulty', 'Year', 'Has an answer', 'From exam/quiz', 'Semester', 'Format']}
-questions = {1: ['hello', 'Calculus1', 'Integrals', 'Easy', 2019, 'Yes', 'Exam', 'A', 'Docx'], 2: ['moto', 'Calculus2', 'banana', 'hard', 2020, 'No', 'Quiz', 'A', 'Pdf']}
+# for example: questions = {1: ['hello', 'Calculus1', 'Integrals', 'Easy', 2019, 'Yes', 'Exam', 'A', 'Docx'], 2: ['moto', 'Calculus2', 'banana', 'hard', 2020, 'No', 'Quiz', 'A', 'Pdf']}
+
+questions = {}
+

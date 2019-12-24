@@ -1,16 +1,18 @@
 
 """
  all the imported libraries/API for this project:
-"""""
-from tkinter import *
-from tkinter import filedialog
+"""
 import os
 from tkinter import messagebox
-from PIL import ImageTk, Image
 from tkinter.ttk import *
+from tkinter import filedialog
+from tkinter import *
+from PIL import ImageTk, Image
 from data_base import *
+import tkinter as tk
 
-# open source code from GitHub
+
+
 
 class GUI(object):
     def __init__(self):
@@ -48,53 +50,53 @@ class GUI(object):
         if key == 0:
             if self.combo_course.get() == 'Calculus1':
                 # creating a Label for courses:
-                Label(self.self_add, text='Sub subject: ').grid(row=2, column=0)
+                Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
 
                 # creating combobox for the sub-subjects:
                 self.combo_sub_subject = Combobox(self.self_add)
                 self.combo_sub_subject['values'] = ('Integrals', 'Series', 'Derivatives', 'Investigation of functions', 'Limits')
                 self.combo_sub_subject.current(0)  # set the selected item
-                self.combo_sub_subject.grid(row=2, column=1)
+                self.combo_sub_subject.place(x=80, y=70)
 
             elif self.combo_course.get() == 'Linear algebra':
                 # creating a Label for courses:
-                Label(self.self_add, text='Sub subject: ').grid(row=2, column=0)
+                Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
 
                 # creating combobox for the sub-subjects:
                 self.combo_sub_subject = Combobox(self.self_add)
                 self.combo_sub_subject['values'] = ('Spans', 'Matrices', 'Vectors', 'base and 3D', "Determinate")
                 self.combo_sub_subject.current(0)  # set the selected item
-                self.combo_sub_subject.grid(row=2, column=1)
+                self.combo_sub_subject.place(x=80, y=70)
 
             elif self.combo_course.get() == 'Pre computer science':
                 # creating a Label for courses:
-                Label(self.self_add, text='Sub subject: ').grid(row=2, column=0)
+                Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
 
                 # creating combobox for the sub-subjects:
                 self.combo_sub_subject = Combobox(self.self_add)
                 self.combo_sub_subject['values'] = ('Functions', 'Variables', 'Structs', 'Recursions', 'Classes')
                 self.combo_sub_subject.current(0)  # set the selected item
-                self.combo_sub_subject.grid(row=2, column=1)
+                self.combo_sub_subject.place(x=80, y=70)
 
             elif self.combo_course.get() == 'Architecture':
                 # creating a Label for courses:
-                Label(self.self_add, text='Sub subject: ').grid(row=2, column=0)
+                Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
 
                 # creating combobox for the sub-subjects:
                 self.combo_sub_subject = Combobox(self.self_add)
                 self.combo_sub_subject['values'] = ('PLA/PAL', 'Diagrams', 'RTL', 'Logging gates', "RAM")
                 self.combo_sub_subject.current(0)  # set the selected item
-                self.combo_sub_subject.grid(row=2, column=1)
+                self.combo_sub_subject.place(x=80, y=70)
 
             elif self.combo_course.get() == 'Logic 1':
                 # creating a Label for courses:
-                Label(self.self_add, text='Sub subject: ').grid(row=2, column=0)
+                Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
 
                 # creating combobox for the sub-subjects:
                 self.combo_sub_subject = Combobox(self.self_add)
                 self.combo_sub_subject['values'] = ('Predicates', 'Logical expressions', 'Inductions', 'Logic', 'Graphs')
                 self.combo_sub_subject.current(0)  # set the selected item
-                self.combo_sub_subject.grid(row=2, column=1)
+                self.combo_sub_subject.place(x=80, y=70)
 
         elif key == 1:
             if self.combo_course.get() == 'Calculus1':
@@ -148,6 +150,12 @@ class GUI(object):
                 self.combo_sub_subject.place(x=274, y=0)
 
 
+    def add_answer(self):
+        self.answer = 'No'
+        self.self_add.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("all files", "*.*")))
+
+        # opening the image for tkinter.
+        self.my_answer = ImageTk.PhotoImage(Image.open(self.self_add.filename))
 
     def add_question(self):
         """
@@ -157,7 +165,7 @@ class GUI(object):
         """
         # adding a new top level to our tk - on this level the the fill form will be represented.
         self.self_add = Toplevel(self.student_Lecturer_top)
-        self.self_add.geometry('400x800')
+        self.self_add.geometry('240x340')
 
         # identifier key
         key = 0
@@ -166,97 +174,113 @@ class GUI(object):
         self.self_add.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("all files", "*.*")))
 
         # opening the image for tkinter.
-        img3 = ImageTk.PhotoImage(Image.open(self.self_add.filename))
-        # self.question_display = Label(self.self_add, image=img3)
-        # self.questions_display = img3
+        self.img = ImageTk.PhotoImage(Image.open(self.self_add.filename))
+        # self.question_display = Label(self.self_add, image=img)
+        # self.questions_display = img
         # self.question_display.grid(row=40, column=0)
 
         # /////////////////////////////////// #
         # ------ creating the fill form :     #
         # /////////////////////////////////// #
 
-        Label(self.self_add, text='Fill form:').grid(row=0, column=2)
+        Label(self.self_add, text='Fill form:').place(x=80, y=0)
 
         # creating a Label for courses:
-        Label(self.self_add, text='Course: ').grid(row=1, column=0, sticky=W)
+        Label(self.self_add, text='Course: ').place(x=2, y=40)
+
 
         # creating combobox for the courses:
         self.combo_course = Combobox(self.self_add, width=14)
         self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
         self.combo_course.current(0)  # set the selected item
-        self.combo_course.grid(row=1, column=1, sticky='W')
+        self.combo_course.place(x=80, y=40)
 
         # creating a button for courses:
         if self.combo_course.get() == None:
-            Button(self.self_add, text='ಠᴗಠ', width=3, state=DISABLED).place(x=185, y=20)
+            Button(self.self_add, text='ಠᴗಠ', width=3, state=DISABLED).place(x=192, y=35)
         else:
-            Button(self.self_add, text='ಠᴗಠ', width=3, command=lambda: self.sub_subject_check(key)).place(x=185, y=20)
+            Button(self.self_add, text='ಠᴗಠ', width=3, command=lambda: self.sub_subject_check(key)).place(x=192, y=35)
 
 
         # creating a Label for courses:
-        Label(self.self_add, text='Sub subject: ').grid(row=2, column=0, sticky=W)
+        Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
 
         # creating combobox for the sub-subjects:
         self.combo_sub_subject = Combobox(self.self_add)
         self.combo_sub_subject['values'] = ('not yet', 'not yet', 'not yet', 'not yet', "not yet")
         self.combo_sub_subject.current(0)  # set the selected item
-        self.combo_sub_subject.grid(row=2, column=1)
+        self.combo_sub_subject.place(x=80, y=70)
 
         # creating a Label for Difficulty:
-        Label(self.self_add, text='Difficulty: ').grid(row=3, column=0, sticky=W)
+        Label(self.self_add, text='Difficulty: ').place(x=2, y=100)
 
         # creating combobox for the difficulty:
         self.combo_difficulty = Combobox(self.self_add)
         self.combo_difficulty['values'] = ('Easy', 'Moderate', 'Hard')
         self.combo_difficulty.current(0)  # set the selected item
-        self.combo_difficulty.grid(row=3, column=1, sticky=W)
+        self.combo_difficulty.place(x=80, y=100)
 
         # creating a Label for Answers:
-        Label(self.self_add, text='Answers: ').grid(row=4, column=0, sticky=W)
+        Label(self.self_add, text='Answers: ').place(x=2, y=130)
 
         # creating combobox for the Answers:
-        self.combo_answers = Combobox(self.self_add)
+        self.combo_answers = Combobox(self.self_add, width=14)
         self.combo_answers['values'] = ('Yes', 'No')
         self.combo_answers.current(0)  # set the selected item
-        self.combo_answers.grid(row=4, column=1)
+        self.combo_answers.place(x=80, y=130)
+
+        # creating a button for courses:
+        if self.combo_answers.get() == 'No':
+            Button(self.self_add, text='ಠᴗಠ', width=3, height=1, state=DISABLED).place(x=192, y=125)
+        else:
+            Button(self.self_add, text='ಠᴗಠ', width=3, height=1, command=self.add_answer).place(x=192, y=125)
 
         # creating a Label for Years:
-        Label(self.self_add, text='Year:').grid(row=5, column=0, sticky=W)
+        Label(self.self_add, text='Year:').place(x=2, y=160)
 
         # creating spinbox for the Years:
         var = IntVar()
         var.set(2019)
         self.spin_years = Spinbox(self.self_add, from_=1995, to=2020, width=21, textvariable=var)
-        self.spin_years.grid(row=5, column=1)
+        self.spin_years.place(x=80, y=160)
 
         # creating Label for the semester:
-        Label(self.self_add, text='Semester:').grid(row=6, column=0, sticky=W)
+        Label(self.self_add, text='Semester:').place(x=2, y=190)
 
         # creating a combobox for the Semester:
         self.combo_semester = Combobox(self.self_add)
         self.combo_semester['values'] = ('A', 'B', 'Summer')
         self.combo_semester.current(0)  # set the selected item
-        self.combo_semester.grid(row=6, column=1)
+        self.combo_semester.place(x=80, y=190)
 
         # creating a Label for Format:
-        Label(self.self_add, text='Format:').grid(row=7, column=0, sticky=W)
+        Label(self.self_add, text='Format:').place(x=2, y=220)
 
         # creating a combobox for Format:
         self.combo_format = Combobox(self.self_add)
         self.combo_format['values'] = ('Docx', 'Pdf', 'Jpeg')
         self.combo_format.current(0)  # set the selected item
-        self.combo_format.grid(row=7, column=1)
+        self.combo_format.place(x=80, y=220)
 
         # creating Label for the Exam/Quiz:
-        Label(self.self_add, text='From:').grid(row=8, column=0, sticky=W)
+        Label(self.self_add, text='From:').place(x=2, y=250)
 
         # creating a combobox for the Exam/Quiz:
         self.combo_from = Combobox(self.self_add)
         self.combo_from['values'] = ('Exam', 'Quiz')
         self.combo_from.current(0)  # set the selected item
-        self.combo_from.grid(row=8, column=1)
+        self.combo_from.place(x=80, y=250)
 
+        # crating an Accept button:
+        Button(self.self_add, text='Accept', command=self.add_question_to_db, width=20).place(x=40, y=290)
 
+    def add_question_to_db(self):
+        # creating a start key i = 0, each time we add an element to the dictionary, we will implement i:
+        self.key = 0
+        questions[self.key] = [self.img, self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.my_answer, self.spin_years.get(), self.combo_semester.get(), self.combo_format.get(), self.combo_from.get()]
+        self.key += 1
+
+        print('added: ', questions[self.key])
     def crop_question(self):
         """
 
