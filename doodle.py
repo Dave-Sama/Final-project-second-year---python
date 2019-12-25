@@ -24,7 +24,7 @@ combo_course.place(x=80, y=40)
 
 # creating a button for courses:
 
-Button(root, text='ಠᴗಠ', width=3, state=DISABLED).place(x=192, y=35)
+Button(root, text='OK', width=3, state=DISABLED).place(x=192, y=35)
 
 # creating a Label for courses:
 Label(root, text='Sub subject: ').place(x=2, y=70)
@@ -56,7 +56,7 @@ root.combo_answers.place(x=80, y=130)
 
 
 # creating a button for courses:
-Button(root, text='ಠᴗಠ', width=3, height=1, state=DISABLED).place(x=192, y=125)
+Button(root, text='OK', width=3, height=1, state=DISABLED).place(x=192, y=125)
 
 # creating a Label for Years:
 Label(root, text='Year:').place(x=2, y=160)
