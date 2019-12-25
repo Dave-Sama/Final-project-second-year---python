@@ -151,7 +151,6 @@ class GUI(object):
 
 
     def add_answer(self):
-        self.answer = 'No'
         self.self_add.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("all files", "*.*")))
 
         # opening the image for tkinter.
@@ -275,12 +274,16 @@ class GUI(object):
         Button(self.self_add, text='Accept', command=self.add_question_to_db, width=20).place(x=40, y=290)
 
     def add_question_to_db(self):
-        # creating a start key i = 0, each time we add an element to the dictionary, we will implement i:
+        """
+        this method can add a question/question+ answer to the data base.
+        """
+        # creating a start self.key = 0, each time we add an element to the dictionary, we will implement i:
         self.key = 0
+
+        # adding the question/question + answer, with all it's information:
         questions[self.key] = [self.img, self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.my_answer, self.spin_years.get(), self.combo_semester.get(), self.combo_format.get(), self.combo_from.get()]
         self.key += 1
 
-        print('added: ', questions[self.key])
     def crop_question(self):
         """
 
