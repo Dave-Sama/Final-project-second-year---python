@@ -216,21 +216,13 @@ class GUI(object):
         self.combo_difficulty.current(0)  # set the selected item
         self.combo_difficulty.place(x=80, y=100)
 
-        # creating a Label for Answers:
+        # creating a Label and a Button for Answers:
         Label(self.self_add, text='Answers: ').place(x=2, y=130)
+        self.self_add.browseButton=Button(self.self_add,command=self.buttonClick, text='...',width=2, height=1).place(x=80, y=125)
+        self.self_add.browseText=tk.Text(self.self_add, height=1, width=15, state="disabled").place(x=110, y=125)
+        
 
-        # creating combobox for the Answers:
-        self.combo_answers = Combobox(self.self_add, width=14)
-        self.combo_answers['values'] = ('Yes', 'No')
-        self.combo_answers.current(0)  # set the selected item
-        self.combo_answers.place(x=80, y=130)
 
-        # creating a button for courses:
-        if self.combo_answers.get() == 'No':
-            Button(self.self_add, text='Browse', width=5, height=1, state=DISABLED).place(x=192, y=125)
-        else:
-
-            Button(self.self_add, text='Browse', width=5, height=1, command=self.add_answer).place(x=192, y=125)
 
         # creating a Label for Years:
         Label(self.self_add, text='Year:').place(x=2, y=160)
@@ -270,6 +262,18 @@ class GUI(object):
 
         # crating an Accept button:
         Button(self.self_add, text='Accept', command=self.add_question_to_db, width=20).place(x=40, y=290)
+
+     #Event handler for Browse button
+    def buttonClick(self):
+        '''
+        Opens the Browse window to upload answers
+        :return: Browse window
+        '''
+        self.self_add.answerFile = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("PDF files", "*.PDF"), ("all files", "*.*")))
+        answerFileName=self.self_add.answerFile.rpartition('/')[-1]
+        print(answerFileName)
+        return answerFileName
+
 
     def add_question_to_db(self):
         """
