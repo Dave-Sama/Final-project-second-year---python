@@ -21,9 +21,6 @@ class GUI(object):
         root.title('Test')
         root.geometry('310x85')
 
-    # make the top right close button minimize (iconify) the main window
-        root.protocol("WM_DELETE_WINDOW", root.iconify)
-
     # make Esc exit the program
         root.bind('<Escape>', lambda e: root.destroy())
 
@@ -196,9 +193,9 @@ class GUI(object):
 
         # creating a button for courses:
         if self.combo_course.get() == None:
-            Button(self.self_add, text='ಠᴗಠ', width=3, state=DISABLED).place(x=192, y=35)
+            Button(self.self_add, text='Apply', width=4, state=DISABLED).place(x=192, y=35)
         else:
-            Button(self.self_add, text='ಠᴗಠ', width=3, command=lambda: self.sub_subject_check(key)).place(x=192, y=35)
+            Button(self.self_add, text='Apply', width=4, command=lambda: self.sub_subject_check(key)).place(x=192, y=35)
 
 
         # creating a Label for courses:
@@ -230,9 +227,10 @@ class GUI(object):
 
         # creating a button for courses:
         if self.combo_answers.get() == 'No':
-            Button(self.self_add, text='ಠᴗಠ', width=3, height=1, state=DISABLED).place(x=192, y=125)
+            Button(self.self_add, text='Browse', width=5, height=1, state=DISABLED).place(x=192, y=125)
         else:
-            Button(self.self_add, text='ಠᴗಠ', width=3, height=1, command=self.add_answer).place(x=192, y=125)
+
+            Button(self.self_add, text='Browse', width=5, height=1, command=self.add_answer).place(x=192, y=125)
 
         # creating a Label for Years:
         Label(self.self_add, text='Year:').place(x=2, y=160)
@@ -348,9 +346,9 @@ class GUI(object):
         # creating a button for courses: (example)
         print(self.combo_course.get())
         if self.combo_course.get() == None:
-            Button(self.student_Lecturer_top, text='ಠᴗಠ', width=3, state=DISABLED).place(x=161, y=0)
+            Button(self.student_Lecturer_top, text='OK', width=3, state=DISABLED).place(x=161, y=0)
         else:
-            Button(self.student_Lecturer_top, text='ಠᴗಠ', width=3, command=lambda: self.sub_subject_check(key1)).place(x=161, y=0)
+            Button(self.student_Lecturer_top, text='OK', width=3, command=lambda: self.sub_subject_check(key1)).place(x=161, y=0)
 
 
         # creating a Label for courses:
