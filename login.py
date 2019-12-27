@@ -1,3 +1,4 @@
+
 """
  all the imported libraries/API for this project:
 """
@@ -9,7 +10,7 @@ from tkinter import *
 from PIL import ImageTk, Image
 from data_base import *
 import tkinter as tk
-import PyPDF2
+
 
 
 
@@ -20,10 +21,13 @@ class GUI(object):
         root.title('Test')
         root.geometry('310x85')
 
-        # make Esc exit the program
+    # make the top right close button minimize (iconify) the main window
+        root.protocol("WM_DELETE_WINDOW", root.iconify)
+
+    # make Esc exit the program
         root.bind('<Escape>', lambda e: root.destroy())
 
-        # create a menu bar with an Exit command
+    # create a menu bar with an Exit command
         menu_bar = Menu(root)
         file_menu = Menu(menu_bar, tearoff=0)
         file_menu.add_command(label="Exit", command=root.destroy)
@@ -145,128 +149,34 @@ class GUI(object):
                 self.combo_sub_subject.current(0)  # set the selected item
                 self.combo_sub_subject.place(x=274, y=0)
 
+
     def add_answer(self):
-        '''
-                Opens the Browse window to upload answers
-                :return: Browse window
-                '''
+        self.self_add.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("all files", "*.*")))
 
-        # creating the path to the required file (jpeg/pdf **NOTE**:: *TEXT/docx* IS STILL MISSING )
-        self.self_add.answerFile = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("PDF files", "*.PDF"),  ("jpg files", "*.jpg"), ("all files", "*.*")))
-
-        # we need to check the answer's format:
-        self.answer_file_format = self.self_add.answerFile.rpartition('.')[-1]
-
-        # print(question_file_format)
-        if self.answer_file_format == 'jpeg' or self.answer_file_format == 'jpg':
-            # saving the image as reference to display it later if needed.
-            self.img_answer = ImageTk.PhotoImage(Image.open(self.self_add.answerFile))
-
-        else:
-            # if the file is in a PDF format:
-            self.pdf_answer = ""
-            pdfFileObj = open(self.self_add.answerFile, 'rb')
-
-            # creating a pdf reader object
-            pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-
-            # printing number of pages in pdf file
-            # print(pdfReader.numPages)
-
-            # creating a page object
-
-            for i in range(0, pdfReader.numPages):
-                pageObj = pdfReader.getPage(i)
-
-                # extracting text from page
-                self.pdf_answer = self.pdf_question + str(pageObj.extractText())
-
-            # organizing the text which is extracted from the pdf to a: 10 words per line format:
-            count = 0
-            for i in range(0, len(self.pdf_answer)):
-                if self.pdf_answer[i] == ' ':
-                    if count < 10:
-                        count += 1
-                    else:
-                        self.pdf_answer = self.pdf_answer[0: i] + "\n" + self.pdf_answer[i:]
-                        count = 0
-
-            # print(pdf_question)
-
-            # closing the pdf file object
-            pdfFileObj.close()
-
-        # extracting the name of the file from it's path to display it in fill form
-        answerFileName = self.self_add.answerFile.rpartition('/')[-1]
-        # print(answerFileName)
-
-        # creating the new text box with the name of the file in it:
-        self.self_add.browseText = tk.Text(self.self_add, height=1, width=15)
-        self.self_add.browseText.insert(INSERT, answerFileName)
-        self.self_add.browseText.place(x=110, y=125)
-
-        self.combo_answers = 'YES'
+        # opening the image for tkinter.
+        self.my_answer = ImageTk.PhotoImage(Image.open(self.self_add.filename))
 
     def add_question(self):
         """
+
         this method can open the dialog through tkinter, to choose an image from the user's pc and upload it to the data base.
+
         """
         # adding a new top level to our tk - on this level the the fill form will be represented.
         self.self_add = Toplevel(self.student_Lecturer_top)
         self.self_add.geometry('240x340')
 
         # identifier key
-
-        # default answer is No:
-        self.combo_answers = 'No'
         key = 0
 
         # opening the dialog to choose the path to the wanted question
-        self.self_add.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("PDF files", "*.PDF"), ("jpg files", "*.jpg"), ("all files", "*.*")))
+        self.self_add.filename = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("jpeg files", "*.jpeg"), ("all files", "*.*")))
 
-        # we need to check the question's format:
-        self.question_file_format = self.self_add.filename.rpartition('.')[-1]
-        #print(question_file_format)
-
-        if self.question_file_format == 'jpeg' or self.question_file_format == 'jpg':
-            # opening the image for tkinter.
-            self.img_question = ImageTk.PhotoImage(Image.open(self.self_add.filename))
-            # self.question_display = Label(self.student_Lecturer_top, image=self.img_question)
-            # self.questions_display = self.img_question
-            # self.question_display.place(x=260, y=100)
-        else:
-            #if the file is in a PDF format:
-            self.pdf_question = ""
-            pdfFileObj = open(self.self_add.filename, 'rb')
-
-            # creating a pdf reader object
-            pdfReader = PyPDF2.PdfFileReader(pdfFileObj)
-
-            # printing number of pages in pdf file
-            # print(pdfReader.numPages)
-
-            # creating a page object
-
-            for i in range(0, pdfReader.numPages):
-                pageObj = pdfReader.getPage(i)
-
-                # extracting text from page
-                self.pdf_question = self.pdf_question + str(pageObj.extractText())
-
-            # organizing the text which is extracted from the pdf to a: 10 words per line format:
-            count = 0
-            for i in range(0, len(self.pdf_question)):
-                if self.pdf_question[i] == ' ':
-                    if count < 10:
-                        count += 1
-                    else:
-                        self.pdf_question = self.pdf_question[0: i] + "\n" + self.pdf_question[i:]
-                        count = 0
-
-            # print(pdf_question)
-
-            # closing the pdf file object
-            pdfFileObj.close()
+        # opening the image for tkinter.
+        self.img = ImageTk.PhotoImage(Image.open(self.self_add.filename))
+        # self.question_display = Label(self.self_add, image=img)
+        # self.questions_display = img
+        # self.question_display.grid(row=40, column=0)
 
         # /////////////////////////////////// #
         # ------ creating the fill form :     #
@@ -277,6 +187,7 @@ class GUI(object):
         # creating a Label for courses:
         Label(self.self_add, text='Course: ').place(x=2, y=40)
 
+
         # creating combobox for the courses:
         self.combo_course = Combobox(self.self_add, width=14)
         self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
@@ -285,9 +196,10 @@ class GUI(object):
 
         # creating a button for courses:
         if self.combo_course.get() == None:
-            Button(self.self_add, text='Apply', width=4, state=DISABLED).place(x=192, y=35)
+            Button(self.self_add, text='ಠᴗಠ', width=3, state=DISABLED).place(x=192, y=35)
         else:
-            Button(self.self_add, text='Apply', width=4, command=lambda: self.sub_subject_check(key)).place(x=192, y=35)
+            Button(self.self_add, text='ಠᴗಠ', width=3, command=lambda: self.sub_subject_check(key)).place(x=192, y=35)
+
 
         # creating a Label for courses:
         Label(self.self_add, text='Sub subject: ').place(x=2, y=70)
@@ -307,10 +219,20 @@ class GUI(object):
         self.combo_difficulty.current(0)  # set the selected item
         self.combo_difficulty.place(x=80, y=100)
 
-        # creating a Label and a Button for Answers:
+        # creating a Label for Answers:
         Label(self.self_add, text='Answers: ').place(x=2, y=130)
-        self.self_add.browseButton = Button(self.self_add, command=self.add_answer, text='...', width=2, height=1).place(x=80, y=125)
-        self.self_add.browseText = tk.Text(self.self_add, height=1, width=15, state="disabled").place(x=110, y=125)
+
+        # creating combobox for the Answers:
+        self.combo_answers = Combobox(self.self_add, width=14)
+        self.combo_answers['values'] = ('Yes', 'No')
+        self.combo_answers.current(0)  # set the selected item
+        self.combo_answers.place(x=80, y=130)
+
+        # creating a button for courses:
+        if self.combo_answers.get() == 'No':
+            Button(self.self_add, text='ಠᴗಠ', width=3, height=1, state=DISABLED).place(x=192, y=125)
+        else:
+            Button(self.self_add, text='ಠᴗಠ', width=3, height=1, command=self.add_answer).place(x=192, y=125)
 
         # creating a Label for Years:
         Label(self.self_add, text='Year:').place(x=2, y=160)
@@ -359,20 +281,17 @@ class GUI(object):
         self.key = 0
 
         # adding the question/question + answer, with all it's information:
-        if self.question_file_format == 'jpeg' or self.question_file_format == 'jpg':
-            questions[self.key] = [self.img_question, self.img_answer, self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers, self.combo_from.get(),  self.combo_semester.get(), self.combo_format.get()]
-        else:
-            questions[self.key] = [self.pdf_question, self.pdf_answer, self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers, self.combo_from.get(), self.combo_semester.get(), self.combo_format.get()]
-
+        questions[self.key] = [self.img, self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.my_answer, self.spin_years.get(), self.combo_semester.get(), self.combo_format.get(), self.combo_from.get()]
         self.key += 1
-        print(questions[0])
 
     def crop_question(self):
         """
+
         this method does the following:
         1. open the open source tool to crop the selected question from the test/quiz.
         2. crop the right place in the image
         3. save it into a folder that is inside the user's pc.
+
         """
         # this os call should open the open source code, so the user could crop a question.
         os.startfile("C:\\Users\\david\\PycharmProjects\\Pe_fundementals_reworked\\Open source\\new_os_crop.py")
@@ -383,6 +302,7 @@ class GUI(object):
 
         """
                 here should be displayed all the options the students has:
+
                 1. choose a course.
                 2. choose a sub-subject for this course.
                 3. choose the difficulty for the displayed questions.
@@ -392,11 +312,12 @@ class GUI(object):
                 7. test/quiz
                 8. period A/B
                 9. format of the question
+              
 
-
-
+                
+                
                 here should be displayed all the options the students has:
-
+        
                 1. choose a course.
                 2. choose a sub-subject for this course.
                 3. choose the difficulty for the displayed questions.
@@ -407,7 +328,7 @@ class GUI(object):
                 8. period A/B
                 9. format of the question
                 10. add a question to the data base.
-
+                
         """
         # creating the defining the new layer.
         self.student_Lecturer_top.geometry('840x430')
@@ -427,9 +348,10 @@ class GUI(object):
         # creating a button for courses: (example)
         print(self.combo_course.get())
         if self.combo_course.get() == None:
-            Button(self.student_Lecturer_top, text='...', width=3, state=DISABLED).place(x=161, y=0)
+            Button(self.student_Lecturer_top, text='ಠᴗಠ', width=3, state=DISABLED).place(x=161, y=0)
         else:
-            Button(self.student_Lecturer_top, text='...', width=3, command=lambda: self.sub_subject_check(key1)).place(x=161, y=0)
+            Button(self.student_Lecturer_top, text='ಠᴗಠ', width=3, command=lambda: self.sub_subject_check(key1)).place(x=161, y=0)
+
 
         # creating a Label for courses:
         Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
@@ -513,30 +435,16 @@ class GUI(object):
 
 
 
-    def display_answer(self, image_number):
-        """
-        this method can display the answer for the displayed question if the answer is exists
-        """
-        # creating a new layer to display the answer:
-        answer_display = Toplevel(self.student_Lecturer_top)
-
-        # defining a label with the answer ( giving it the position where it located in the data base)
-        self.my_label = Label(answer_display, image=self.questions_matches[image_number - 1][1])
-
-        # keeping the reference to the image
-        self.my_label.image = self.questions_matches[image_number - 1][1]
-        self.my_label.pack()
 
     def forward(self, image_number):
         """
         this method is handling the logic behind the forward button
         """
         self.my_label.place_forget()
-        self.my_label = Label(self.student_Lecturer_top, image=self.questions_matches[image_number - 1][0])
-        self.my_label.image = self.questions_matches[image_number - 1][0]
+        self.my_label = Label(self.student_Lecturer_top, image=self.questions_image[image_number - 1])
+        self.my_label.image = self.questions_image[image_number-1]
 
-
-        if image_number < len(self.questions_matches):
+        if image_number < len(self.questions_image):
             self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(image_number + 1)).place(x=488, y=50)
             self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(image_number - 1)).place(x=285, y=50)
 
@@ -545,19 +453,21 @@ class GUI(object):
 
         self.my_label.place(x=260, y=100)
 
+
     def back(self, image_number):
         """
         this method handling the logic behind the back button
         """
         self.my_label.place_forget()
-        self.my_label = Label(self.student_Lecturer_top, image=self.questions_matches[image_number - 1])
-        self.my_label.image = self.questions_matches[image_number - 1]
+        self.my_label = Label(self.student_Lecturer_top, image=self.questions_image[image_number - 1])
+        self.my_label.image = self.questions_image[image_number - 1]
 
         self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(image_number + 1)).place(x=488, y=50)
         self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(image_number - 1)).place(x=285, y=50)
 
         if image_number == 1:
             self.button_forward = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
+
 
         self.my_label.place(x=260, y=100)
 
@@ -567,44 +477,41 @@ class GUI(object):
         """
 
         # temp1 for the data base , temp2 for the users input
-        self.questions_matches = []
+
+        # questions image is the most important list, here
+        self.questions_image = []
+        questions_from_base = []
         temp1 = []
         flag = False
         i = 0
 
-        # copying the values for each key from the data base:
+        # we copied the values from 1 to 8 from each key in the dictionary:
         for k in questions:
-            temp1.append(questions[k])
+            temp1.append(questions[k][1:])
+            questions_from_base.append((questions[k][0:1]))
 
             # we need to convert the year to a string to compare it later
-            temp1[i][4] = str(temp1[i][4])
+            temp1[i][3] = str(temp1[i][3])
 
         # putting all the user inputs into temp2
-        temp2 = [self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers, self.combo_from.get(), self.combo_semester.get(), self.combo_format.get()]
-
-        print(f"from combo: {temp2}")
-        print(f"from data base: {temp1[2:]}")
+        temp2 = [self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers.get(), self.combo_from.get(), self.combo_semester.get(), self.combo_format.get()]
 
         # checking if there is a match between temp1, and temp2
         for i in range(0, len(temp1)):
-            if temp1[i][2:] == temp2:
-                if self.combo_format.get() == 'PDF':
-                    if self.combo_answers == 'YES':
-                        self.questions_matches.append([self.pdf_question, self.pdf_answer])
-                    else:
-                        self.questions_matches.append([self.pdf_question, 'no answer'])
-                else:
-                    if self.combo_answers == 'YES':
-                        self.questions_matches.append([self.img_question, self.img_answer])
-                    else:
-                        self.questions_matches.append([self.img_question, 'no answer'])
+            if temp1[i] == temp2:
+                """ still str here, need to be changed later """
+                path = "happy_mango.jpeg"
+                img = ImageTk.PhotoImage(Image.open(path))
+                self.questions_image.append(img)
                 flag = True
 
+        # if the length is bigger than 0, it means there is a match - go into the image_display
         if flag == True:
             self.image_display()
 
         elif flag == False:
             self.error_message()
+
 
     def error_message(self):
         """
@@ -614,31 +521,29 @@ class GUI(object):
         Label(error_window, text='Cannot find a match').pack()
 
     def image_display(self):
-        # path = "banana.jpeg"
-        # img = ImageTk.PhotoImage(Image.open(path))
-        # path1 = "leopard.jpeg"
-        # img1 = ImageTk.PhotoImage(Image.open(path1))
-        #
-        # path2 = "panda.jpeg"
-        # img2 = ImageTk.PhotoImage(Image.open(path2))
-        #
-        # path3 = "pug.jpeg"
-        # img3 = ImageTk.PhotoImage(Image.open(path3))
-        #
-        # self.questions_matches.append(img)
-        # self.questions_matches.append(img1)
-        # self.questions_matches.append(img2)
-        # self.questions_matches.append(img3)
+        path = "banana.jpeg"
+        img = ImageTk.PhotoImage(Image.open(path))
+        path1 = "leopard.jpeg"
+        img1 = ImageTk.PhotoImage(Image.open(path1))
+
+        path2 = "panda.jpeg"
+        img2 = ImageTk.PhotoImage(Image.open(path2))
+
+        path3 = "pug.jpeg"
+        img3 = ImageTk.PhotoImage(Image.open(path3))
+
+        self.questions_image.append(img)
+        self.questions_image.append(img1)
+        self.questions_image.append(img2)
+        self.questions_image.append(img3)
+
+
 
         # The Label widget is a standard Tkinter widget used to display a text or image on the screen.
-        self.my_label = tk.Label(self.student_Lecturer_top, image=self.questions_matches[0][0])
-        self.my_label.image = self.questions_matches[0][0]
+        self.my_label = tk.Label(self.student_Lecturer_top, image=self.questions_image[0])
+        self.my_label.image = self.questions_image[0]
         # The Pack geometry manager packs widgets in rows or columns.
         self.my_label.place(x=260, y=100)
-
-        # creating another button to display the answer:
-        if self.questions_matches[0][1] != 'no answer':
-            Button(text='Answer', command=lambda: self.display_answer(1)).place(x=500, y=50)
 
     def create(self, key):
         """
@@ -646,12 +551,12 @@ class GUI(object):
         * if the user is a student - it should navigate him to the student's bar.
         * if the user is a Lecturer - it should navigate him to the Lecturer's bar.
         * if the user is a Coordinator - it should navigate him to the Coordinator's bar.
+
         """
         # creating a common TopLevel layer for all kind of users, but with different kind of classification the window
         # will present a different bar.
         self.new_root = Toplevel(self.root)
 
-        # creating the navigation with the user's classification.
         # creating the navigation with the user's classification.
         if key == 'S' or key == 'L':
             # gui for Students and Lecturers - with disabled Lecturer button, because, if you press on lecturer button.
@@ -672,22 +577,29 @@ class GUI(object):
         page.
         """
 
-        k = users_data.keys()  # verification of username in dictionary
+        k = users_data.keys() # verification of username in dictionary
         for names in k:
             if names == self.username_field.get():
-                if users_data[names][0] != self.password_field.get():  # verification of password
+                if users_data[names][0] != self.password_field.get(): # verification of password
                     messagebox.showinfo("Error", "Invalid Password!")
                 else:
                     if users_data[names][1] == 'S':
                         self.create('S')
-                        # open student
+                        #open student
                     if users_data[names][1] == 'L':
                         self.create('L')
-                        # open lecturer
+                        #open lecturer
                     if users_data[names][1] == 'C':
                         self.create('C')
-                        # open coordinator
+                        #open coordinator
+
+
+
+
 
 
 gui = GUI()
 gui.root.mainloop()
+
+
+
