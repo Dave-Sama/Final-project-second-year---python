@@ -514,8 +514,16 @@ class GUI(object):
 
 
     def display_answer(self, image_number):
+        """
+        this method can display the answer for the displayed question if the answer is exists
+        """
+        # creating a new layer to display the answer:
         answer_display = Toplevel(self.student_Lecturer_top)
+
+        # defining a label with the answer ( giving it the position where it located in the data base)
         self.my_label = Label(answer_display, image=self.questions_matches[image_number - 1][1])
+
+        # keeping the reference to the image
         self.my_label.image = self.questions_matches[image_number - 1][1]
         self.my_label.pack()
 
@@ -630,7 +638,7 @@ class GUI(object):
 
         # creating another button to display the answer:
         if self.questions_matches[0][1] != 'no answer':
-            Button(text='Answer', command=lambda: self.display_answer(image_number - 1)).place(x=500, y=50)
+            Button(text='Answer', command=lambda: self.display_answer(1)).place(x=500, y=50)
 
     def create(self, key):
         """
