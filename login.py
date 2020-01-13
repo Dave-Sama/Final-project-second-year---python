@@ -840,11 +840,20 @@ class GUI(object):
         3. save it into a folder that is inside the user's pc.
         """
         # this os call should open the open source code, so the user could crop a question.
+<<<<<<< HEAD
         os.startfile(
             "C:\\Users\\david\\PycharmProjects\\Pe_fundementals_reworked\\Open source\\new_os_crop.py"
         )
+=======
+        os.startfile("C:\\Users\\Dave\Desktop\\New folder (2)\\Open sourcenew_os_crop.py")
+>>>>>>> 5164f03f27ddaf5891039464e89b90ded32471bf
 
     def crop_pdf(self):
+        with open('LOG.txt', mode='a') as file:
+            text = '\n***************\n'
+            text = text + '\nthe system opening an external link to pdf crop: ' +  '\n'
+            text = text + '\n***************\n'
+            file.write(text)
         """
         this method create a link to a site that can crop a pdf
         """
@@ -2172,6 +2181,13 @@ class GUI(object):
                                                         window=button2)
 
     def management(self):
+        with open('LOG.txt', mode='a') as file:
+            text = "\n***********\n"
+            text = text + 'the user is a coordinator, and he opened the management menu.\n'
+            text = text + "\n***********\n"
+
+            file.write(text)
+
         self.management_top = Toplevel(self.root)
         self.management_top.geometry('250x230')
         Label(self.management_top,
@@ -2197,6 +2213,14 @@ class GUI(object):
 
     def pick_reflect(self, key):
         if key == 'Add':
+            with open('LOG.txt', mode='a') as file:
+                text = '\n*********\n'
+                text = text + 'the coordinator want to add a user\n'
+                text = text + '\n*********\n'
+
+                file.write(text)
+
+
             Label(self.management_top, text='on:').place(x=2, y=65)
             self.combo_reflect = Combobox(self.management_top, width=14)
             self.combo_reflect['values'] = [
@@ -2210,6 +2234,12 @@ class GUI(object):
                    command=self.pick_add).place(x=185, y=60)
 
         if key == 'Remove':
+            with open('LOG.txt', mode='a') as file:
+                text = '\n*********\n'
+                text = text + 'the coordinator want to remove a user\n'
+                text = text + '\n*********\n'
+
+                file.write(text)
             Label(self.management_top, text='on:').place(x=2, y=65)
             self.combo_reflect = Combobox(self.management_top, width=14)
             self.combo_reflect['values'] = [
@@ -2223,6 +2253,12 @@ class GUI(object):
                    command=self.pick_remove).place(x=185, y=60)
 
         if key == 'Update':
+            with open('LOG.txt', mode='a') as file:
+                text = '\n*********\n'
+                text = text + 'the coordinator want to update a user\n'
+                text = text + '\n*********\n'
+
+                file.write(text)
             Label(self.management_top, text='on:').place(x=2, y=65)
             self.combo_reflect = Combobox(self.management_top, width=14)
             self.combo_reflect['values'] = [
@@ -2464,3 +2500,4 @@ class GUI(object):
 
 gui = GUI()
 gui.root.mainloop()
+
