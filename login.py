@@ -784,7 +784,7 @@ class GUI(object):
 
             # creating a delete question for the lecturer:
             button_delete = Button(self.student_Lecturer_top, text='delete', width=4, state=DISABLED)
-            answer_combo_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+            answer_combo_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
 
         else:
 
@@ -930,14 +930,14 @@ class GUI(object):
                 back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index))
-                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
                 if self.questions_matches[index][1] != '':
                     # creating forward/backward button for image display:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
             else:
                 self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
                 forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
@@ -946,15 +946,15 @@ class GUI(object):
                 back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index))
-                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
 
                 if self.questions_matches[index][1] != '':
                     # creating forward/backward button for image display:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
         else:
             self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[index][0])
@@ -968,14 +968,14 @@ class GUI(object):
                 back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
-                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
                 if self.questions_matches[index][1] != '':
                     # creating forward/backward button for image display:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
             else:
                 self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
                 forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
@@ -984,15 +984,15 @@ class GUI(object):
                 back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
-                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
 
                 if self.questions_matches[index][1] != '':
                     # creating forward/backward button for image display:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
 
     def back(self, index):
@@ -1023,14 +1023,14 @@ class GUI(object):
                 back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
-                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
                 if self.questions_matches[index][1] != '':
                     # creating forward/backward button for image display:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
             if index == 0:
                 self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
@@ -1040,15 +1040,15 @@ class GUI(object):
                 back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
-                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
 
                 if self.questions_matches[index][1] != '':
                     # creating forward/backward button for image display:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
         else:
                 self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[index][0])
@@ -1062,14 +1062,14 @@ class GUI(object):
                     back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                     button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
-                    delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                    delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
                     if self.questions_matches[index][1] != '':
                         # creating forward/backward button for image display:
                         answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                        answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                     else:
                         answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                        answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                 if index == 0:
                     self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
@@ -1079,15 +1079,15 @@ class GUI(object):
                     back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                     button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
-                    delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                    delete_button_window = self.canvas.create_window(1, 50, anchor='nw', window=button_delete)
 
                     if self.questions_matches[index][1] != '':
                         # creating forward/backward button for image display:
                         answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
-                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                        answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
                     else:
                         answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                        answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
 
     def question_match(self):
@@ -1225,21 +1225,21 @@ class GUI(object):
                 button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                button_backward = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                button_backward = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
             elif len(self.questions_matches) > 1:
                 # creating forward/backward button for image display:
@@ -1251,21 +1251,21 @@ class GUI(object):
                 button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
         elif self.questions_matches[0][2] == 'Pdf':
             self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[0][0])
@@ -1279,21 +1279,21 @@ class GUI(object):
                 button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                button_backward = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                button_backward = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
             elif len(self.questions_matches) > 1:
                 # creating forward/backward button for image display:
@@ -1305,21 +1305,21 @@ class GUI(object):
                 button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
         elif self.questions_matches[0][2] == 'Docx':
             self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[0][0])
@@ -1333,22 +1333,22 @@ class GUI(object):
                 button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                button_backward = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                button_backward = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
 
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
 
 
@@ -1362,22 +1362,22 @@ class GUI(object):
                 button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
                 delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
                     answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
 
                 else:
                     answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
-                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    answer_button_window = self.canvas.create_window(49, 50, anchor='nw', window=answer_button)
 
                     delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
-                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+                    answer_button_window = self.canvas.create_window(1, 50, anchor='nw', window=delete_button)
 
 
     def play(self):
@@ -1751,3 +1751,4 @@ class GUI(object):
 
 gui = GUI()
 gui.root.mainloop()
+
