@@ -1,46 +1,61 @@
 """
  all the imported libraries/API for this project:
 """
+import time
 import os
 from tkinter import messagebox
 from tkinter.ttk import *
 from tkinter import filedialog
 from tkinter import *
 from PIL import ImageTk, Image, ImageOps
-from data_base import *
+import webbrowser
 import tkinter as tk
 import PyPDF2
 import base64
 import docx2txt
+import pygame
+
+
+pygame.init()
+
 
 class GUI(object):
     def __init__(self):
         # setting the root
         root = self.root = tk.Tk()
-        root.title('Test')
-        root.geometry('310x85')
+        root.title('Question review App')
+        root.iconbitmap('pencil_icon.ico')
+        root.geometry('285x85')
+        self.canvas1 = Canvas(self.root, width=285, height=200)
+        img = ImageTk.PhotoImage(file='intro_img.jpg')
+        self.canvas1.create_image(0, 0, anchor=NW, image=img)
+        self.canvas1.image = img
+        self.canvas1.pack()
 
-        # make Esc exit the program
-        root.bind('<Escape>', lambda e: root.destroy())
+        # playing a background melody
+        self.play()
 
-        # create a menu bar with an Exit command
-        menu_bar = Menu(root)
-        file_menu = Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label="Exit", command=root.destroy)
-        menu_bar.add_cascade(label="File", menu=file_menu)
-        root.config(menu=menu_bar)
+        intro_label1 = Label(self.root, text=" Please enter to the system: ")
+        intro_window = self.canvas1.create_window(1, 5, anchor='nw', window=intro_label1)
 
-        Label(self.root, text=" UserName: ").grid(row=0, column=0, sticky=W)
-        Label(self.root, text=" Password: ").grid(row=1, column=0, sticky=W)
+        intro_label2 = Label(self.root, text=" UserName: ")
+        intro_window = self.canvas1.create_window(1, 27, anchor='nw', window=intro_label2)
+
+        intro_label3 = Label(self.root, text=" Password: ")
+        intro_window = self.canvas1.create_window(1, 51, anchor='nw', window=intro_label3)
+
 
         # creating 2 text boxes to insert the user's information to the system, with the "Text" method:
-        self.username_field = Entry(self.root, width=35)
-        self.username_field.grid(row=0, column=1)
-        self.password_field = Entry(self.root, show="•", width=35)
-        self.password_field.grid(row=1, column=1)
+        self.username_field = Entry(self.root, width=25)
+        intro_window = self.canvas1.create_window(75, 27, anchor='nw', window=self.username_field)
+
+        self.password_field = Entry(self.root, show="•", width=25)
+        intro_window = self.canvas1.create_window(75, 51, anchor='nw', window=self.password_field)
 
         # creating "Accept" button:
-        Button(self.root, text='Accept', command=self.login_verify).grid(row=4, column=1, padx=10, pady=10)
+        accept_button = Button(self.root, text='Accept', width=5, command=self.login_verify, height=2)
+        intro_window = self.canvas1.create_window(232, 27, anchor='nw', window=accept_button)
+
 
     def sub_subject_check(self, key):
         if key == 0:
@@ -146,10 +161,10 @@ class GUI(object):
                 self.combo_sub_subject.place(x=274, y=0)
 
     def add_answer(self):
-        '''
+        """
                 Opens the Browse window to upload answers
                 :return: Browse window
-                '''
+        """
 
         # creating the path to the required file (jpeg/pdf **NOTE**:: *TEXT/docx* IS STILL MISSING )
         self.self_add.answerFile = filedialog.askopenfilename(initialdir="/", title="Select file", filetypes=(("Jpeg files", "*.Jpeg"), ("Pdf files", "*.Pdf"),  ("Jpg files", "*.Jpg"), ("Docx files", "*.Docx")))
@@ -159,14 +174,12 @@ class GUI(object):
 
         # print(question_file_format)
         if self.answer_file_format == 'jpeg' or self.answer_file_format == 'jpg':
-
             size = (350, 350)
             thumb = ImageOps.fit(Image.open(self.self_add.answerFile), size, Image.ANTIALIAS)
             thumb.save(self.self_add.answerFile.format(self.self_add.answerFile[:self.self_add.answerFile.rfind('.')]), "JPEG")
 
             img = ImageOps.fit(Image.open(self.self_add.answerFile), size, Image.ANTIALIAS)
             self.img_answer = ImageTk.PhotoImage(img)
-
 
             with open(self.self_add.answerFile, "rb") as imageFile:
 
@@ -196,7 +209,7 @@ class GUI(object):
             count = 0
             for i in range(0, len(self.pdf_answer)):
                 if self.pdf_answer[i] == ' ':
-                    if count < 10:
+                    if count < 9:
                         count += 1
                     else:
                         self.pdf_answer = self.pdf_answer[0: i] + "\n" + self.pdf_answer[i:]
@@ -215,7 +228,7 @@ class GUI(object):
             count = 0
             for i in range(0, len(self.docx_answer)):
                 if self.docx_answer[i] == ' ':
-                    if count < 10:
+                    if count < 9:
                         count += 1
                     else:
                         self.docx_answer = self.docx_answer[0: i] + "\n" + self.docx_answer[i:]
@@ -254,7 +267,6 @@ class GUI(object):
         #print(question_file_format)
 
         if self.question_file_format == 'jpeg' or self.question_file_format == 'jpg':
-
             size = (350, 350)
             thumb = ImageOps.fit(Image.open(self.self_add.filename), size, Image.ANTIALIAS)
             thumb.save(self.self_add.filename.format(self.self_add.filename[:self.self_add.filename.rfind('.')]), "JPEG")
@@ -265,19 +277,6 @@ class GUI(object):
             with open(self.self_add.filename, "rb") as imageFile:
                 self.str_img_question = base64.b64encode(imageFile.read())
 
-            # imgdata = base64.b64decode(self.str_img_question)
-
-            # filename = 'some_image.jpg'  # I assume you have a way of picking unique filenames
-            # with open(filename, 'wb') as f:
-            #     f.write(imgdata)
-
-            # opening the image for tkinter.
-            # size = (300, 300)
-            # img = ImageOps.fit(Image.open(self.self_add.filename), size, Image.ANTIALIAS)
-            # self.img_question = ImageTk.PhotoImage(img)
-            # self.question_display = Label(self.student_Lecturer_top, image=self.img_question)
-            # self.questions_display = self.img_question
-            # self.question_display.place(x=260, y=100)
         elif self.question_file_format == 'pdf':
             #if the file is in a PDF format:
             self.pdf_question = ""
@@ -301,7 +300,7 @@ class GUI(object):
             count = 0
             for i in range(0, len(self.pdf_question)):
                 if self.pdf_question[i] == ' ':
-                    if count < 15:
+                    if count < 9:
                         count += 1
                     else:
                         self.pdf_question = self.pdf_question[0: i] + "\n" + self.pdf_question[i:]
@@ -319,7 +318,7 @@ class GUI(object):
             count = 0
             for i in range(0, len(self.docx_question)):
                 if self.docx_question[i] == ' ':
-                    if count < 10:
+                    if count < 9:
                         count += 1
                     else:
                         self.docx_question = self.docx_question[0: i] + "\n" + self.docx_question[i:]
@@ -420,7 +419,6 @@ class GUI(object):
                 print(self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers, self.combo_from.get(), self.combo_semester.get(), self.combo_format.get())
 
                 # in order to add a question to our file, we need to open it as a string, and evaluate it to it's former meaning
-
                 with open('questions.txt', mode='r') as file:
                     eval_list = file.read()
 
@@ -439,7 +437,6 @@ class GUI(object):
                 with open('questions.txt', mode='w') as file:
                     file.write(repr(eval_list))
 
-
             elif self.answer_file_format == 'jpeg' or self.answer_file_format == 'jpg':
                 questions = [self.str_img_question, self.str_img_answer, self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers, self.combo_from.get(), self.combo_semester.get(), self.combo_format.get(), self.answer_file_format]
                 print(self.combo_course.get(), self.combo_sub_subject.get(), self.combo_difficulty.get(), self.spin_years.get(), self.combo_answers, self.combo_from.get(),  self.combo_semester.get(), self.combo_format.get())
@@ -449,7 +446,6 @@ class GUI(object):
                 with open('questions.txt', mode='r') as file:
                     eval_list = file.read()
                     self.self_add.destroy()
-
 
                     # evaluating the content of the file to it's former meanings
                     eval_list = eval(eval_list)
@@ -637,7 +633,7 @@ class GUI(object):
                 with open('questions.txt', mode='w') as file:
                     file.write(repr(eval_list))
 
-    def crop_question(self):
+    def crop_image(self):
         """
         this method does the following:
         1. open the open source tool to crop the selected question from the test/quiz.
@@ -647,139 +643,206 @@ class GUI(object):
         # this os call should open the open source code, so the user could crop a question.
         os.startfile("C:\\Users\\david\\PycharmProjects\\Pe_fundementals_reworked\\Open source\\new_os_crop.py")
 
+    def crop_pdf(self):
+        """
+        this method create a link to a site that can crop a pdf
+        """
+        webbrowser.open("https://pdfresizer.com/crop")
+
     def display(self, key):
+        """
+                        here should be displayed all the options the students has:
+                        1. choose a course.
+                        2. choose a sub-subject for this course.
+                        3. choose the difficulty for the displayed questions.
+                        4. choose to display only questions with an answer.
+                        5. choose a test from specific year
+                        6. choose a semester
+                        6. choose a semester
+                        7. test/quiz
+                        8. period A/B
+                        9. format of the question
 
+
+
+                        here should be displayed all the options the students has:
+
+                        1. choose a course.
+                        2. choose a sub-subject for this course.
+                        3. choose the difficulty for the displayed questions.
+                        4. choose to display only questions with an answer.
+                        5. choose a test from specific year
+                        6. choose a semester
+                        7. test/quiz
+                        8. period A/B
+                        9. format of the question
+                        10. add a question to the data base.
+
+                """
         self.student_Lecturer_top = Toplevel(self.root)
+        self.student_Lecturer_top.title('Question review App')
+        self.student_Lecturer_top.iconbitmap('pencil_icon.ico')
 
-        """
-                here should be displayed all the options the students has:
-                1. choose a course.
-                2. choose a sub-subject for this course.
-                3. choose the difficulty for the displayed questions.
-                4. choose to display only questions with an answer.
-                5. choose a test from specific year
-                6. choose a semester
-                6. choose a semester
-                7. test/quiz
-                8. period A/B
-                9. format of the question
+        self.canvas = Canvas(self.student_Lecturer_top, width=850, height=430)
+        img = ImageTk.PhotoImage(Image.open("book_bg.jpg"))
+        self.canvas.create_image(0, 0, anchor=NW, image=img)
+        self.canvas.image = img
+        self.canvas.pack()
 
-
-
-                here should be displayed all the options the students has:
-
-                1. choose a course.
-                2. choose a sub-subject for this course.
-                3. choose the difficulty for the displayed questions.
-                4. choose to display only questions with an answer.
-                5. choose a test from specific year
-                6. choose a semester
-                7. test/quiz
-                8. period A/B
-                9. format of the question
-                10. add a question to the data base.
-
-        """
         # creating the defining the new layer.
-        self.student_Lecturer_top.geometry('840x430')
+        #self.student_Lecturer_top.geometry('840x430')
 
         # identifier key:
         key1 = 1
 
         # creating a Label for courses:
-        Label(self.student_Lecturer_top, text='Course: ').grid(row=0, column=0)
+        course_label = Label(self.student_Lecturer_top, text='Course: ')
+        label_window = self.canvas.create_window(0, 0, anchor='nw', window=course_label)
 
         # creating combobox for the courses:
         self.combo_course = Combobox(self.student_Lecturer_top, width=14)
         self.combo_course['values'] = ('Calculus1', 'Linear algebra', 'Pre computer science', 'Architecture', "Logic 1")
         self.combo_course.current(0)  # set the selected item
-        self.combo_course.grid(row=0, column=1, sticky='W')
+        combo_course_window = self.canvas.create_window(49, 0, anchor='nw', window=self.combo_course)
+
 
         # creating a button for courses: (example)
         if self.combo_course.get() == None:
-            Button(self.student_Lecturer_top, text='...', width=3, state=DISABLED).place(x=161, y=0)
+            click1 = Button(self.student_Lecturer_top, text='...', width=3, state=DISABLED)
+            click1_window = self.canvas.create_window(161, 0, anchor='nw', window=click1)
+
         else:
-            Button(self.student_Lecturer_top, text='...', width=3, command=lambda: self.sub_subject_check(key1)).place(x=161, y=0)
+            click2 = Button(self.student_Lecturer_top, text='...', width=3, command=lambda: self.sub_subject_check(key1))
+            click2_window = self.canvas.create_window(161, 0, anchor='nw', window=click2)
 
         # creating a Label for courses:
-        Label(self.student_Lecturer_top, text='   Sub subject: ').place(x=192, y=0)
+        sub_label = Label(self.student_Lecturer_top, text='   Sub subject: ')
+        sub_window = self.canvas.create_window(192, 0, anchor='nw', window=sub_label)
 
         # creating combobox for the sub-subjects:
         self.combo_sub_subject = Combobox(self.student_Lecturer_top)
         self.combo_sub_subject['values'] = ('not yet', 'not yet', 'not yet', 'not yet', "not yet")
         self.combo_sub_subject.current(0)  # set the selected item
-        self.combo_sub_subject.place(x=274, y=0)
+        sub_combo_window = self.canvas.create_window(274, 0, anchor='nw', window=self.combo_sub_subject)
 
         # creating a Label for Difficulty:
-        Label(self.student_Lecturer_top, text='  Difficulty: ').place(x=417, y=0)
+        dif_label = Label(self.student_Lecturer_top, text='  Difficulty: ')
+        dif_label_window = self.canvas.create_window(417, 0, anchor='nw', window=dif_label)
 
         # creating combobox for the difficulty:
         self.combo_difficulty = Combobox(self.student_Lecturer_top)
         self.combo_difficulty['values'] = ('Easy', 'Moderate', 'Hard')
         self.combo_difficulty.current(0)  # set the selected item
-        self.combo_difficulty.place(x=483, y=0)
+        dif_combo_window = self.canvas.create_window(483, 0, anchor='nw', window=self.combo_difficulty)
 
         # creating a Label for Answers:
-        Label(self.student_Lecturer_top, text='  Answers: ').place(x=626, y=0)
+        answer_label = Label(self.student_Lecturer_top, text='  Answers: ')
+        answer_label_window = self.canvas.create_window(626, 0, anchor='nw', window=answer_label)
 
         # creating combobox for the Answers:
         self.combo_answers = Combobox(self.student_Lecturer_top)
         self.combo_answers['values'] = ('Yes', 'No')
         self.combo_answers.current(0)  # set the selected item
-        self.combo_answers.place(x=688, y=0)
+        answer_combo_window = self.canvas.create_window(688, 0, anchor='nw', window=self.combo_answers)
 
         # creating a Label for Years:
-        Label(self.student_Lecturer_top, text='Year:').place(x=1, y=22)
+        year_label = Label(self.student_Lecturer_top, text='Year:')
+        answer_combo_window = self.canvas.create_window(1, 22, anchor='nw', window=year_label)
 
         if key == 'L' or key == 'C':
-            # creating an Add button for the lecturer:
-            Button(self.student_Lecturer_top, text='add', width=4, command=self.add_question).place(x=5, y=50)
+
+            self.menubar = Menu(self.student_Lecturer_top)
+            self.student_Lecturer_top.config(menu=self.menubar)
+
+            file_menu = Menu(self.menubar, tearoff=0)
+            submenu = Menu(file_menu)
+
+            file_menu.add_command(label="Add question", command=self.add_question)
+            file_menu.add_cascade(label='Crop', menu=submenu, underline=0)
+
+            submenu.add_command(label="Image", command=self.crop_image)
+            submenu.add_command(label="PDF", command=self.crop_pdf)
+
+            file_menu.add_separator()
+
+            file_menu.add_command(label="Exit", command=self.student_Lecturer_top.destroy)
+            self.menubar.add_cascade(label="File", menu=file_menu)
+
+            # Adding music menu
+            music_menu = Menu(self.menubar, tearoff=0)
+            self.menubar.add_cascade(label="Music", menu=music_menu)
+
+            music_menu.add_command(label="Play", command=self.play)
+            music_menu.add_command(label="Stop", command=self.stop)
+
+
 
             # creating a delete question for the lecturer:
-            Button(self.student_Lecturer_top, text='delete', width=4, state=DISABLED).place(x=45, y=50)
+            button_delete = Button(self.student_Lecturer_top, text='delete', width=4, state=DISABLED)
+            answer_combo_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
 
-            # creating a crop question for the lecturer:
-            Button(self.student_Lecturer_top, text='crop', width=4, command=self.crop_question).place(x=85, y=50)
+        else:
+
+            self.menubar = Menu(self.student_Lecturer_top)
+            self.student_Lecturer_top.config(menu=self.menubar)
+
+            menu = Menu(self.menubar, tearoff=0)
+            submenu = Menu(menu)
+
+            self.menubar.add_cascade(label="File", menu=menu)
+            menu.add_separator()
+            menu.add_command(label="Exit", command=self.student_Lecturer_top.destroy)
+
+            self.menubar.add_cascade(label="Music", menu=menu)
+            menu.add_command(label="Play", command=self.play)
+            menu.add_command(label="Stop", command=self.stop)
 
         # creating spinbox for the Years:
         var = IntVar()
         var.set(2019)
         self.spin_years = Spinbox(self.student_Lecturer_top, from_=1995, to=2020, width=6, textvariable=var)
-        self.spin_years.place(x=49, y=22, width=144)
+        spin_years_window = self.canvas.create_window(49, 22, width=144, anchor='nw', window=self.spin_years)
 
         # creating Label for the semester:
-        Label(self.student_Lecturer_top, text='Semester:').place(x=201, y=22)
+        semester_label = Label(self.student_Lecturer_top, text='Semester:')
+        semester_label_window = self.canvas.create_window(201, 22, anchor='nw', window=semester_label)
 
         # creating a combobox for the Semester:
         self.combo_semester = Combobox(self.student_Lecturer_top)
         self.combo_semester['values'] = ('A', 'B', 'Summer')
         self.combo_semester.current(0)  # set the selected item
-        self.combo_semester.place(x=274, y=22)
+        semester_combo_window = self.canvas.create_window(274, 22, anchor='nw', window=self.combo_semester)
 
         # creating a Label for Format:
-        Label(self.student_Lecturer_top, text='Format:').place(x=423, y=22)
+        format_label = Label(self.student_Lecturer_top, text='Format:')
+        format_label_window = self.canvas.create_window(423, 22, anchor='nw', window=format_label)
 
         # creating a combobox for Format:
         self.combo_format = Combobox(self.student_Lecturer_top)
         self.combo_format['values'] = ('Docx', 'Pdf', 'Jpeg')
         self.combo_format.current(0)  # set the selected item
-        self.combo_format.place(x=483, y=22)
+        format_combo_window = self.canvas.create_window(483, 22, anchor='nw', window=self.combo_format)
 
         # creating Label for the Exam/Quiz:
-        Label(self.student_Lecturer_top, text='From:').place(x=632, y=22)
+        from_label = Label(self.student_Lecturer_top, text='From:')
+        from_label_window = self.canvas.create_window(632, 22, anchor='nw', window=from_label)
 
         # creating a combobox for the Exam/Quiz:
         self.combo_from = Combobox(self.student_Lecturer_top)
         self.combo_from['values'] = ('Exam', 'Quiz')
         self.combo_from.current(0)  # set the selected item
-        self.combo_from.place(x=688, y=22)
+        from_combo_window = self.canvas.create_window(688, 22, anchor='nw', window=self.combo_from)
 
         # crating an Accept button:
-        Button(self.student_Lecturer_top, text='Accept', command=self.question_match, width=20).place(x=334, y=50)
+        accept_button = Button(self.student_Lecturer_top, text='Accept', command=self.question_match, width=20)
+        accept_button_window = self.canvas.create_window(334, 50, anchor='nw', window=accept_button)
 
         # creating forward/backward button for image display:
-        self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
-        self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
+        self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
+        forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+        self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+        back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
     def delete_question(self, index):
 
@@ -789,13 +852,11 @@ class GUI(object):
             # evaluating the content of the file to it's former meanings
             eval_list = eval(eval_list)
 
-
         for i in range(0,len(eval_list)):
             if self.questions_matches[index][0] in eval_list[i]:
                 for j in range(i+1, len(eval_list)):
                     eval_list[j][0] -= 1
                 eval_list.pop(i)
-
 
         # now after the appending, we want to represent the list as a string, and put it into the file:
         with open('questions.txt', mode='w') as file:
@@ -818,9 +879,8 @@ class GUI(object):
             filename = 'some_image_answer.jpg'
             with open(filename, 'wb') as f:
                 f.write(imgdata)
-
-            self.img_answer = ImageTk.PhotoImage(Image.open(filename))
-
+            self.temp = Image.open(filename)
+            self.img_answer = ImageTk.PhotoImage(self.temp)
 
             self.my_label = Label(self.answer_display, image=self.img_answer)
             self.my_label.image = self.img_answer
@@ -839,8 +899,6 @@ class GUI(object):
         this method is handling the logic behind the forward button
         """
 
-
-
         self.my_label.destroy()
 
         if self.questions_matches[index][2] == 'Jpeg':
@@ -848,60 +906,89 @@ class GUI(object):
             filename = 'some_image_answer.jpg'
             with open(filename, 'wb') as f:
                 f.write(imgdata)
-
-            self.img_question = ImageTk.PhotoImage(Image.open(filename))
+            self.temp = Image.open(filename)
+            self.img_question = ImageTk.PhotoImage(self.temp)
 
             self.my_label = tk.Label(self.student_Lecturer_top, image=self.img_question)
             self.my_label.image = self.img_question
 
             # The Pack geometry manager packs widgets in rows or columns.
-            self.my_label.place(x=260, y=100)
+            my_label_window = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
             # creating another button to display the answer:
-            if self.questions_matches[index][1] != '':
-                Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index)).place(x=126, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
-
-            else:
-                # creating forward/backward button for image display:
-                Button(self.student_Lecturer_top, text='Answer', state=DISABLED).place(x=126, y=50)
 
             if index < (len(self.questions_matches)-1):
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index+1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index-1)).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index+1))
+                forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index-1))
+                back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index))
+                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                if self.questions_matches[index][1] != '':
+                    # creating forward/backward button for image display:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                else:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
             else:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1)).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
+                forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1))
+                back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index))
+                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+
+                if self.questions_matches[index][1] != '':
+                    # creating forward/backward button for image display:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                else:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
         else:
             self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[index][0])
-            self.my_label.place(x=260, y=100)
-            Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index)).place(x=45, y=50)
+            my_label_window = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
-            # creating another button to display the answer:
-            if self.questions_matches[index][1] != '':
-                Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index)).place(x=126, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
+            if index < (len(self.questions_matches) - 1):
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
+                forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1))
+                back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
+                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                if self.questions_matches[index][1] != '':
+                    # creating forward/backward button for image display:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                else:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
             else:
-                # creating forward/backward button for image display:
-                Button(self.student_Lecturer_top, text='Answer', state=DISABLED).place(x=126, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
+                forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
-            if len(self.questions_matches)-1 > index:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index+1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda :self.back(index-1)).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1))
+                back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
-            else:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1)).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda:self.delete_question(index)).place(x=45, y=50)
+                button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
+                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
 
-        self.my_label.place(x=260, y=100)
+                if self.questions_matches[index][1] != '':
+                    # creating forward/backward button for image display:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                else:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+
 
     def back(self, index):
         """
@@ -914,58 +1001,117 @@ class GUI(object):
             filename = 'some_image_answer.jpg'
             with open(filename, 'wb') as f:
                 f.write(imgdata)
-
-            self.img_question = ImageTk.PhotoImage(Image.open(filename))
+            self.temp = Image.open(filename)
+            self.img_question = ImageTk.PhotoImage(self.temp)
 
             self.my_label = tk.Label(self.student_Lecturer_top, image=self.img_question)
             self.my_label.image = self.img_question
 
             # The Pack geometry manager packs widgets in rows or columns.
-            self.my_label.place(x=260, y=100)
+            my_label_window = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
-            # creating another button to display the answer:
-            if self.questions_matches[index][1] != '':
-                Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index)).place(x=126, y=50)
+            if 0 < index < (len(self.questions_matches) - 1):
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
+                forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
-            else:
-                # creating forward/backward button for image display:
-                Button(self.student_Lecturer_top, text='Answer', state=DISABLED).place(x=126, y=50)
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1))
+                back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
+                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                if self.questions_matches[index][1] != '':
+                    # creating forward/backward button for image display:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                else:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
             if index == 0:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
+                forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
-            else:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1)).place(x=285, y=50)
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
+                delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+
+                if self.questions_matches[index][1] != '':
+                    # creating forward/backward button for image display:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                else:
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
         else:
-            self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[index][0])
-            self.my_label.place(x=260, y=100)
+                self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[index][0])
+                my_label = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
-            # creating another button to display the answer:
-            if self.questions_matches[index][1] != '':
-                Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index)).place(x=126, y=50)
+                if 0 < index < (len(self.questions_matches) - 1):
+                    self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
+                    forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
-            else:
-                # creating forward/backward button for image display:
-                Button(self.student_Lecturer_top, text='Answer', state=DISABLED).place(x=126, y=50)
+                    self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1))
+                    back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
 
-            if index == 0:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
+                    button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
+                    delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+                    if self.questions_matches[index][1] != '':
+                        # creating forward/backward button for image display:
+                        answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    else:
+                        answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
-            else:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=lambda: self.back(index - 1)).place(x=285, y=50)
+                if index == 0:
+                    self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(index + 1))
+                    forward_button_window = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
 
-        self.my_label.place(x=260, y=100)
+                    self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                    back_button_window = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                    button_delete = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(index))
+                    delete_button_window = self.canvas.create_window(45, 50, anchor='nw', window=button_delete)
+
+                    if self.questions_matches[index][1] != '':
+                        # creating forward/backward button for image display:
+                        answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(index))
+                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+                    else:
+                        answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                        answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
 
     def question_match(self):
             """
             this method can find a match from the search bar, and return the matches to the bar
             """
+
+            with open('LOG.txt', mode='a') as file:
+                text = '\n***************\n'
+                text = '\nthe user choose the following: \n'
+                text = text + '\nCourse: '
+                text = text + str(self.combo_course.get())
+                text = text + '\nSub subject: '
+                text = text + str(self.combo_sub_subject.get())
+                text = text + "\nFormat: "
+                text = text + str(self.combo_format.get())
+                text = text + '\nSemester: '
+                text = text + str(self.combo_semester.get())
+                text = text + '\nWith answer: '
+                text = text + str(self.combo_answers.get())
+                text = text + '\nFrom: '
+                text = text + str(self.combo_from.get())
+                text = text + '\nDifficulty: '
+                text = text + str(self.combo_difficulty.get())
+                text = text + '\nFormat: '
+                text = text + str(self.combo_format.get())
+                text = text + '\n***************\n'
+                file.write(text)
+
 
             # my_questions for the data base , temp2 for the users input
             self.questions_matches = []
@@ -997,7 +1143,7 @@ class GUI(object):
                         if self.combo_answers.get() == 'Yes': # האם המשתמש ביקש שלשאלה יהיה פתרון
                             if my_questions[i][1][10] == 'pdf':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Pdf', 'Pdf'])
-                            elif my_questions[i][1][10] == 'jpeg':
+                            elif my_questions[i][1][10] == 'jpeg' or my_questions[i][1][10] == 'jpg':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Pdf', 'Jpeg'])
                             elif my_questions[i][1][10] == 'docx':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Pdf', 'Docx'])
@@ -1009,7 +1155,7 @@ class GUI(object):
                         if self.combo_answers.get() == 'Yes': # האם המשתמש ביקש שלשאלה יהיה פתרון
                             if my_questions[i][1][10] == 'pdf':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Docx', 'Pdf'])
-                            elif my_questions[i][1][10] == 'jpeg':
+                            elif my_questions[i][1][10] == 'jpeg' or my_questions[i][1][10] == 'jpg':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Docx', 'Jpeg'])
                             elif my_questions[i][1][10] == 'docx':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Docx', 'Docx'])
@@ -1020,7 +1166,7 @@ class GUI(object):
                         if self.combo_answers.get() == 'Yes':  # האם המשתמש ביקש שלשאלה יהיה פתרון
                             if my_questions[i][1][10] == 'pdf':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Jpeg', 'Pdf'])
-                            elif my_questions[i][1][10] == 'jpeg':
+                            elif my_questions[i][1][10] == 'jpeg' or my_questions[i][1][10] == 'jpg':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Jpeg', 'Jpeg'])
                             elif my_questions[i][1][10] == 'docx':
                                 self.questions_matches.append([my_questions[i][1][0], my_questions[i][1][1], 'Jpeg', 'Docx'])
@@ -1044,6 +1190,12 @@ class GUI(object):
 
     def image_display(self):
 
+        with open('LOG.txt', mode='a') as file:
+            text = '\n***************\n'
+            text = text + '\nthe system found at least one match: ' + + '\n'
+            text = text + '\n***************\n'
+            file.write(text)
+
         # The Label widget is a standard Tkinter widget used to display a text or image on the screen.
         if self.questions_matches[0][2] == 'Jpeg':
 
@@ -1051,118 +1203,190 @@ class GUI(object):
             filename = 'some_image.jpg'
             with open(filename, 'wb') as f:
                  f.write(imgdata)
-
-            self.img_question = ImageTk.PhotoImage(Image.open(filename))
+            self.temp = Image.open(filename)
+            self.img_question = ImageTk.PhotoImage(self.temp)
 
             self.my_label = tk.Label(self.student_Lecturer_top, image=self.img_question)
             self.my_label.image = self.img_question
 
-            self.my_label.place(x=260, y=100)
+            my_label_window = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
             # creating another button to display the answer:
             if len(self.questions_matches) == 1:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
+                button_forward = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                button_backward = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 else:
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
-
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
             elif len(self.questions_matches) > 1:
                 # creating forward/backward button for image display:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=self.back, state=DISABLED).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
 
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5,  command=lambda: self.forward(1))
+                button_forward = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 else:
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
         elif self.questions_matches[0][2] == 'Pdf':
             self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[0][0])
-            self.my_label.place(x=260, y=100)
+            my_label_window = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
             if len(self.questions_matches) == 1:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
+                button_forward = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                button_backward = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 else:
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
-
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
             elif len(self.questions_matches) > 1:
                 # creating forward/backward button for image display:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=self.back, state=DISABLED).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(1))
+                button_forward = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 else:
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
         elif self.questions_matches[0][2] == 'Docx':
             self.my_label = tk.Label(self.student_Lecturer_top, bg='white', text=self.questions_matches[0][0])
-            self.my_label.place(x=260, y=100)
+            my_label_window = self.canvas.create_window(260, 100, anchor='nw', window=self.my_label)
 
             if len(self.questions_matches) == 1:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, state=DISABLED)
+                button_forward = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                button_backward = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
 
                 else:
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
 
 
             elif len(self.questions_matches) > 1:
                 # creating forward/backward button for image display:
-                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(1)).place(x=488, y=50)
-                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, command=self.back, state=DISABLED).place(x=285, y=50)
-                Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+
+                self.button_forward = Button(self.student_Lecturer_top, text='>>', width=5, command=lambda: self.forward(1))
+                button_forward = self.canvas.create_window(488, 50, anchor='nw', window=self.button_forward)
+
+                self.button_back = Button(self.student_Lecturer_top, text='<<', width=5, state=DISABLED)
+                button_backward = self.canvas.create_window(285, 50, anchor='nw', window=self.button_back)
+
+                delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
                 if self.questions_matches[0][1] != '':
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0))
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
+
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
 
 
                 else:
-                    Button(self.student_Lecturer_top, text='Answer', command=lambda: self.display_answer(0)).place(x=126, y=50)
-                    Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0)).place(x=45, y=50)
+                    answer_button = Button(self.student_Lecturer_top, text='Answer', state=DISABLED)
+                    answer_button_window = self.canvas.create_window(126, 50, anchor='nw', window=answer_button)
 
+                    delete_button = Button(self.student_Lecturer_top, text='delete', width=4, command=lambda: self.delete_question(0))
+                    answer_button_window = self.canvas.create_window(45, 50, anchor='nw', window=delete_button)
+
+
+    def play(self):
+        """
+        this method loading the background melody of the program
+        """
+        pygame.mixer.music.load("background_music.mp3")  # Loading File Into Mixer
+        pygame.mixer.music.play()  # Playing It In The Whole Device
+
+    def stop(self):
+        """
+        this method stops the background music
+        """
+        pygame.mixer.music.stop()
 
     def create(self, key):
         """
@@ -1171,25 +1395,60 @@ class GUI(object):
         * if the user is a Lecturer - it should navigate him to the Lecturer's bar.
         * if the user is a Coordinator - it should navigate him to the Coordinator's bar.
         """
+
         # creating a common TopLevel layer for all kind of users, but with different kind of classification the window
         # will present a different bar.
-        self.new_root = Toplevel(self.root)
+        self.root.geometry('285x162')
 
         # creating the navigation with the user's classification.
         # creating the navigation with the user's classification.
         if key == 'S' or key == 'L':
+            with open('LOG.txt', mode='a') as file:
+                text = '\n***************\n'
+                text = text + 'user has been verified by the system as a ' + key
+                text = text + '\n***************\n'
+                file.write(text)
+
+            label1 = Label(self.root, text='Please click here:')
+            button_window = self.canvas1.create_window(2, 85, anchor='nw', window=label1)
+
             # gui for Students and Lecturers - with disabled Lecturer button, because, if you press on lecturer button.
             # it should open the Lecturer management bar for the Coordinator
-            Button(self.new_root, text='Questions', command=lambda: self.display(key)).grid(row=1, column=1, padx=10, pady=10)
-            Button(self.new_root, text='Lecturers', state=DISABLED).grid(row=1, column=2, padx=10, pady=10)
+            button1 = Button(self.root, text='Questions', width=7, command=lambda: self.display(key))
+            button_window = self.canvas1.create_window(120, 82, anchor='nw', window=button1)
 
         else:
+            with open('LOG.txt', mode='a') as file:
+                text = '\n***************\n'
+                text = text + '\nUser has been verified by the system as a ' + str(key) + '\n'
+                text = text + '\n***************\n'
+                file.write(text)
+
+            label2 = Label(self.root, text='choose one of the following options:')
+            button_window = self.canvas1.create_window(2, 76, anchor='nw', window=label2)
+
             # it's the key =='C' case: which is open dor the Coordinator, he have access to question and Lecturer.
-            Button(self.new_root, text='Questions', command=lambda: self.display(key)).grid(row=1, column=1, padx=10, pady=10)
-            Button(self.new_root, text='Lecturers', command=self.management).grid(row=1, column=2, padx=10, pady=10)
+            self.coordinator_pick = Combobox(self.root)
+            self.coordinator_pick['values'] = ('Questions', 'Management')
+            self.coordinator_pick.current(0)  # set the selected item
+            combo_window = self.canvas1.create_window(2, 100, anchor='nw', window=self.coordinator_pick)
+
+            self.button1 = Button(self.root, text='...', command=lambda: self.coor_navigate(key)).place(x=150, y=95)
+            # button_window = self.canvas1.create_window(232, 110, anchor='nw', window=self.button1)
+            button1 = Button(self.root, text='Accept', width=20, state=DISABLED).place(x=65, y=127)
+
+
+    def coor_navigate(self, key):
+        if self.coordinator_pick.get() == 'Questions':
+            button1 = Button(self.root, text='Accept', width=20, command=lambda: self.display(key)).place(x=65, y=127)
+            button_window = self.canvas1.create_window(65, 127, anchor='nw', window=button1)
+        else:
+            button2 = Button(self.root, text='Accept', width=20, command=self.management).place(x=65, y=127)
+            button2_window = self.canvas1.create_window(65, 127, anchor='nw', window=button2)
+
 
     def management(self):
-        self.management_top = Toplevel(self.new_root)
+        self.management_top = Toplevel(self.root)
         self.management_top.geometry('250x230')
         Label(self.management_top, text='Choose one of the following options:', bg='white').place(x=30, y=2)
         Label(self.management_top, text='Operation:').place(x=2, y=35)
@@ -1203,6 +1462,7 @@ class GUI(object):
         self.combo_reflect['values'] = ['Add', 'Remove', 'Update']
         self.combo_reflect.current(0)
         self.combo_reflect.place(x=70, y=65)
+
 
     def pick_reflect(self, key):
         if key == 'Add':
@@ -1242,23 +1502,24 @@ class GUI(object):
 
 
     def add(self, log, pas):
+        new_user = {}
         if self.combo_reflect.get() == 'Student':
-            users_data[log] = [pas, 'S']
+            new_user[log] = [pas, 'S']
 
         if self.combo_reflect.get() == 'Lecturer':
-            users_data[log] = [pas, 'L']
+            new_user[log] = [pas, 'L']
 
         if self.combo_reflect.get() == 'Coordinator':
-            users_data[log] = [pas, 'C']
+            new_user[log] = [pas, 'C']
 
-        print(users_data)
+        print(new_user)
 
         with open('users.txt', mode='r') as file:
             my_users = file.read()
 
             my_users = eval(my_users)
 
-        my_users.update(users_data)
+        my_users.update(new_user)
 
 
         with open('users.txt', mode='w') as file:
@@ -1280,7 +1541,7 @@ class GUI(object):
 
         else:
             messagebox.showinfo("Error!", f"{self.entry_username.get()} doesn't exist in the system")
-        print(users_data)
+
 
     def update(self, log, pas):
 
@@ -1301,6 +1562,7 @@ class GUI(object):
         self.entry_username = Entry(self.management_top, width=28)
         self.entry_username.place(x=70, y=95)
         Button(self.management_top, width=12, text='Remove', command=self.remove).place(x=85, y=135)
+
 
     def pick_update(self):
         self.loginList=[]
@@ -1328,6 +1590,7 @@ class GUI(object):
         self.combo_choose.place(x=70, y=95)
 
         Button(self.management_top, width=7, text='Update', command=self.blala).place(x=185, y=90)
+
 
     def valid(self):
         log = self.entry_username.get()
@@ -1368,6 +1631,7 @@ class GUI(object):
         if result == True:
             self.add(log, pas)
 
+
     def blala(self):
         Label(self.management_top, text='New username:').place(x=3, y=125)
         self.entry_new_username = Entry(self.management_top, width=22)
@@ -1376,6 +1640,7 @@ class GUI(object):
         self.entry_new_pass = Entry(self.management_top, width=22)
         self.entry_new_pass.place(x=100, y=155)
         Button(self.management_top, width=12, text='Apply', command=self.update_valid).place(x=75, y=185)
+
 
     def update_valid(self):
         result = True
@@ -1421,19 +1686,33 @@ class GUI(object):
         page.
         """
 
-        k = users_data.keys()  # verification of username in dictionary
+        # log file:
+        with open('LOG.txt', mode='w') as file:
+
+            text = '\n***************\n'
+            text = text + time.ctime(time.time()) + '\n'
+            text = text + 'the user inserted login and password:\nlogin:' + self.username_field.get() + "\npassword:" + \
+            self.password_field.get() + '\nline: 55 \n'
+
+            file.write(text)
+
+        with open('users.txt', mode='r') as file:
+            my_users = file.read()
+            my_users = dict(eval(my_users))
+
+        k = my_users.keys()  # verification of username in dictionary
         for names in k:
             if names == self.username_field.get():
-                if users_data[names][0] != self.password_field.get():  # verification of password
+                if my_users[names][0] != self.password_field.get():  # verification of password
                     messagebox.showinfo("Error", "Invalid Password!")
                 else:
-                    if users_data[names][1] == 'S':
+                    if my_users[names][1] == 'S':
                         self.create('S')
                         # open student
-                    if users_data[names][1] == 'L':
+                    if my_users[names][1] == 'L':
                         self.create('L')
                         # open lecturer
-                    if users_data[names][1] == 'C':
+                    if my_users[names][1] == 'C':
                         self.create('C')
                         # open coordinator
 
