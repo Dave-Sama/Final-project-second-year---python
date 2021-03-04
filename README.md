@@ -31,7 +31,7 @@ import docx2txt
 import pygame
 
 ## to login as a Cordinator:
-login: david
+login: david <br>
 pass: 123
  
  
