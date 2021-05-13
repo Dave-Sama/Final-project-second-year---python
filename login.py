@@ -7,7 +7,7 @@ from tkinter import messagebox
 from tkinter.ttk import *
 from tkinter import filedialog
 from tkinter import *
-from PIL import ImageTk, Image, ImageOps
+from PIL import Image, ImageTk, ImageOps
 import webbrowser
 import tkinter as tk
 import PyPDF2
