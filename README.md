@@ -29,5 +29,9 @@ import base64
 import docx2txt
 
 import pygame
+
+## to login as a Cordinator:
+login: david <br>
+pass: 123
  
  
